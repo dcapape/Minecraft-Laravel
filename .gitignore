@@ -1,0 +1,37 @@
+vendor/
+oldvendor/
+node_modules/
+npm-debug.log
+
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+# Laravel 5 & Lumen specific
+public/storage
+public/hot
+storage/*.key
+.env.*.php
+.env.php
+.env
+Homestead.yaml
+Homestead.json
+
+# Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
+.rocketeer/
+20180121_VatRateExport.xlsx
+app/config/remote.php
+app/config/queue.php
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/core/includes/navbar.php
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s3.png
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s2.png
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/logo.png
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/fonts/Minecrafter.Reg.ttf
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/css/snow.css
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/css/fonts.css
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/css/bootstrap.min.css
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/css/style.css
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s1.png
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/fonts/Minecraftia.ttf
+public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/js/bootstrap.min.js
+.ftpconfig

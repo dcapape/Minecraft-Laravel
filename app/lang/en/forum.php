@@ -1,0 +1,23 @@
+<?php
+return array(
+    'Categories'     => 'Categories',
+    'Category'     => 'Category',
+    'NewReply'     => 'New Reply',
+    'NewTopic'     => 'New Topic',
+    'Quote'     => 'Quote',
+    'topicClosed'     => 'This topic is closed.',
+    'SendReply'     => 'Send Reply',
+    'Topics'     => 'Topics',
+    'Topic'     => 'Topic',
+    'LastMessage'     => 'Last Message',
+    'Replies'     => 'Replies',
+    'forumTopics'     => 'Forum Topics',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+);

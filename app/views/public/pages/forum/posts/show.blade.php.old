@@ -1,0 +1,173 @@
+@extends('public.layouts.default')
+
+@section('title', ' - Forum Topics')
+
+@section('content')
+@include('public.pages.forum.parts.breadcrumbs')
+
+@if (!Auth::guest())
+<div class="new-line" style="padding-bottom: 15px;">
+  @include('public.pages.forum.parts.newreply')
+</div>
+@endif
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{$topic->subject}}</h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="grid row-striped">
+        @foreach ($posts as $post)
+
+        			<div class="row">
+        				<div class="col-md-2">
+                  <h5><a href="/profile/{{User::id($post->userId)->nick}}">{{User::id($post->userId)->nick}}</a></h5>
+                  <h6>{{Convert::parseMCtoHTML(UPermsUser::getByUUID(User::id($post->userId)->uuid)->prefix)}}<h6>
+                  @if (User::isPremium(User::id($post->userId)->uuid))
+                  <img src="https://minecraft-api.com/api/skins/skins.php?player={{User::id($post->userId)->nick}}" style="width:50px" />
+                  @else
+                  <img src="https://lh3.googleusercontent.com/kcEh6LtwvYN1dUrh1d-ctvtFLbkVdT6ba-8Tr7ePYz6FCmHcuTA5K14Sm1CgEbuKHuqI-gWlifb7XdEKlG2zTw=s400" style="width:50px" />
+                  @endif
+    			     </div>
+               <div class="col-md-10">
+                 <button class="quotebtn btn btn-secondary btn-sm pull-right" data-author="{{User::id($post->userId)->nick}}" data-quote="{{$post->content}}">Quote</button>
+                 <?php $bbCode = new \Genert\BBCode\BBCode();
+                 $bbCode->addParser(
+                        'custom-listitem',
+                        '/\[\*\](.*?)\[\/\*\]/s',
+                        '<li>$1</li>',
+                        '$1'
+                    );
+                  $bbCode->addParser(
+                       'custom-quote',
+                       '/\[quote\=(.*?)\](.*?)\[\/quote\]/s',
+                       '<blockquote>$1:<br>$2</blockquote>',
+                       '$2'
+                    );
+                  ?>
+                  {{$bbCode->convertToHtml($post->content)}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4">
+                {{date_format(date_create($topic->date), 'd-m-Y H:i');}}
+              </div>
+              <div class="col-md-8">
+              </div>
+            </div>
+
+        @endforeach
+      </div>
+  </div>
+</div>
+
+@if (!Auth::guest())
+<div class="new-line" style="padding-bottom: 15px;">
+  @include('public.pages.forum.parts.newreply')
+</div>
+@endif
+
+@if (!Auth::guest())
+{{ HTML::ul($errors->all()) }}
+{{ Session::get('message') }}
+{{ Form::open(array('url' => 'forum/post')) }}
+{{ Form::hidden('topicId', $topic->id) }}
+<textarea id="editor" name="content" class="textarea200" ></textarea>
+<div style="text-align: center;">
+{{ Form::submit('Send Reply', array('class' => 'btn btn-primary', 'style' => 'margin: 10px; font-family: mcsmall;')) }}
+</div>
+{{ Form::close() }}
+@endif
+
+@include('public.pages.forum.parts.breadcrumbs')
+@stop
+
+@section('script')
+$(document).ready(function() {
+  var wbbOpt = {
+    autoresize: true,
+    resize_maxheight: 800,
+    startHeight: 500,
+    buttons: 'bold,italic,underline,strike,|,img,video,link,|,bullist,numlist,|,fontcolor,fontsize,|,justifyleft,justifycenter,justifyright,|,quote,code,removeFormat',
+    allButtons: {
+      quote: {
+        transform: {
+          '<div class="quote">{SELTEXT}</div>':'[quote]{SELTEXT}[/quote]',
+          '<div class="quote"><cite>{AUTHOR}:</cite><br>{SELTEXT}</div>':'[quote={AUTHOR}]{SELTEXT}[/quote]'
+        }
+      },
+      fontsize: {
+           type: 'select',
+           title: CURLANG.fontsize,
+           options: "fs_big,fs_normal,fs_small,fs_verysmall"
+     },
+     numlist: {
+       title: CURLANG.numlist,
+       buttonHTML: '<span class="fonticon ve-tlb-numlist1">\uE00a</span>',
+       excmd: 'insertOrderedList',
+       transform : {
+         '<ol>{SELTEXT}</ol>':"[list=1]{SELTEXT}[/list]",
+         '<li>{SELTEXT}</li>':"[*]{SELTEXT}"
+       }
+     },
+     bullist : {
+				title: CURLANG.bullist,
+				buttonHTML: '<span class="fonticon ve-tlb-list1">\uE009</span>',
+				excmd: 'insertUnorderedList',
+				transform : {
+					'<ul>{SELTEXT}</ul>':"[list]{SELTEXT}[/list]",
+					'<li>{SELTEXT}</li>':"[*]{SELTEXT}"
+				}
+			}
+    }
+  }
+  $("#editor").wysibb(wbbOpt);
+
+  $(".quotebtn").click(function() {
+    var author = $(this).data('author');
+    var quote = $(this).data('quote');
+    $('#editor').execCommand('quote',{author: author,seltext:quote});
+    $("#editor").sync();
+  });
+
+})
+
+$('.mc-k').each(function(index, elem) {
+  	var magicSpan, currNode;
+    var string = elem.innerHTML;
+
+    if(string.indexOf('<br>') > -1) {
+        elem.innerHTML = string;
+        for(var j = 0, len = elem.childNodes.length; j < len; j++) {
+            currNode = elem.childNodes[j];
+            if(currNode.nodeType === 3) {
+                magicSpan = document.createElement('span');
+                magicSpan.innerHTML = currNode.nodeValue;
+                elem.replaceChild(magicSpan, currNode);
+                init(magicSpan);
+            }
+        }
+    } else {
+        init(elem, string);
+    }
+    function init(el, str) {
+        var i = 0,
+            obsStr = str || el.innerHTML,
+            len = obsStr.length;
+        obfuscators.push( window.setInterval(function () {
+            if(i >= len) i = 0;
+            obsStr = replaceRand(obsStr, i);
+            el.innerHTML = obsStr;
+            i++;
+        }, 0) );
+    }
+    function randInt(min, max) {
+        return Math.floor( Math.random() * (max - min + 1) ) + min;
+    }
+    function replaceRand(string, i) {
+        var randChar = String.fromCharCode( randInt(64, 95) );
+        return string.substr(0, i) + randChar + string.substr(i + 1, string.length);
+    }
+});
+@stop
