@@ -11,4 +11,7 @@ class shopCost extends Eloquent{
         'discount' => 'numeric',
     );
 
+
+    
+
 }

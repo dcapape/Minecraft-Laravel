@@ -85,6 +85,12 @@ class shopItemsController extends BaseController {
       $item->costs = shopCost::where('itemId', $item->id)->get();
       $item->servers = shopCost::where('itemId', $item->id)->groupBy('serverId')->get();
 
+      if ($item->allopassId != null){
+        $allopass = new Allopass;
+        $item->allopass = $allopass->getOnetimePrices($item->allopassId);
+      }
+
+
       return View::make('public.pages.shop.items.show',
                   ['item' => $item,
                   'userlocation' => $userlocation]);
