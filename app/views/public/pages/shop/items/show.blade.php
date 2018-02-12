@@ -43,11 +43,11 @@
                     @endif
                     @foreach ($item->costs as $cost)
                       @if ($cost->serverId == $server->serverId)
-                      <div class="coin coin-xl {{$cost->coin}}-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
+                      <div class="coin coin-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
                         @if ($cost->price <= 0)
                           {{trans('shop.Free')}}
                         @else
-                          {{$cost->price + 0}}
+                          <img src="/assets/img/paypalButton.png"> {{$cost->price + 0}} EUR
                         @endif
                       </div>
                       @endif
@@ -55,14 +55,12 @@
                   @endforeach
 
                 </div>
-              @else
-                {{trans('shop.NotAvailable')}}
               @endif
 
               @if (isset($item->allopass))
                 @foreach ($item->allopass as $payment)
                   <div class="coin coin-xl" data-url="{{$payment['buyUrl']}}" data-toggle="modal" data-target="#resumeModal">
-                    <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['currency']}} {{$payment['amount']}}
+                    <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['amount']}} {{$payment['currency']}}
                   </div>
                 @endforeach
               @endif

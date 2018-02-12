@@ -90,6 +90,7 @@ class shopItemsController extends BaseController {
         $item->allopass = $allopass->getOnetimePrices($item->allopassId);
       }
 
+      //TODO STRIPE https://medium.com/justlaravel/how-to-integrate-stripe-payment-gateway-in-laravel-94b145ce4ede
 
       return View::make('public.pages.shop.items.show',
                   ['item' => $item,
