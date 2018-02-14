@@ -32,7 +32,7 @@ Route::group([
   Route::resource('stats', 'StatsController');
 
   Route::resource('forum/post', 'forumPostsController');
-  Route::resource('forum/topic', 'forumTopicsController');
+  Route::resource('forum.topic', 'forumTopicsController');
   Route::resource('forum', 'forumCategoriesController', array('except' => array('create', 'store', 'update', 'destroy')));
 
   Route::resource('shop/item.cost', 'shopCostsController');
@@ -40,6 +40,8 @@ Route::group([
   Route::resource('shop', 'shopController', ['as' => 'shop']);
 
 });
+
+Route::resource('forum.topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
 
 Route::resource('shop/item.cost', 'shopCostsController', ['only' => ['update', 'destroy']]);
 Route::resource('shop/item', 'shopItemsController', ['only' => ['update', 'destroy']]);
