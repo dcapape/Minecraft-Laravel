@@ -7,8 +7,8 @@
   @if (User::imAdmin())
     <div class="new-line" style="padding-bottom: 15px;">
       <div class="col-md-12">
-        <div class="col-md-2"><a class="btn btn-primary pull-left" href="/shop/create" role="button">New Category</a></div>
-        <div class="col-md-2"><a class="btn btn-primary pull-left" href="/shop/item/create" role="button">New Item</a></div>
+        <div class="col-md-2"><a class="btn btn-primary pull-left" href="/{{LaravelLocalization::getCurrentLocale()}}/shop/create" role="button">New Category</a></div>
+        <div class="col-md-2"><a class="btn btn-primary pull-left" href="/{{LaravelLocalization::getCurrentLocale()}}/shop/item/create" role="button">New Item</a></div>
       </div>
     </div>
   @endif

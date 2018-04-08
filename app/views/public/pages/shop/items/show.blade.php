@@ -30,40 +30,79 @@
       </div>
       <div class="col-md-3 right-col shopSidebar">
 
-              @if (!$item->costs->isEmpty())
-                <div>
-                  @foreach ($item->servers as $server)
-                    <?php $server->name = trans('general.InvalidServer'); ?>
-                    @if ($server->serverId == 0)
-                      <h4>{{trans('shop.getForYourAccount')}}</h4>
-                      <?php $server->name = trans('general.GlobalAccount'); ?>
-                    @else
-                      <?php $server->name = Server::find($server->serverId)->name; ?>
-                      <h4>{{trans('shop.getForServer', ['servername' => $server->name ] ) }}</h4>
-                    @endif
-                    @foreach ($item->costs as $cost)
-                      @if ($cost->serverId == $server->serverId)
-                      <div class="coin coin-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
-                        @if ($cost->price <= 0)
-                          {{trans('shop.Free')}}
-                        @else
-                          <img src="/assets/img/paypalButton.png"> {{$cost->price + 0}} EUR
-                        @endif
-                      </div>
-                      @endif
-                    @endforeach
-                  @endforeach
-
+        <!--
+        @if (!$item->costs->isEmpty())
+          <div>
+            @foreach ($item->servers as $server)
+              <?php $server->name = trans('general.InvalidServer'); ?>
+              @if ($server->serverId == 0)
+                <h4>{{trans('shop.getForYourAccount')}}</h4>
+                <?php $server->name = trans('general.GlobalAccount'); ?>
+              @else
+                <?php $server->name = Server::find($server->serverId)->name; ?>
+                <h4>{{trans('shop.getForServer', ['servername' => $server->name ] ) }}</h4>
+              @endif
+              @foreach ($item->costs as $cost)
+                @if ($cost->serverId == $server->serverId)
+                <div class="coin coin-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
+                  @if ($cost->price <= 0)
+                    {{trans('shop.Free')}}
+                  @else
+                    FROM {{$cost->price + 0}} EUR
+                  @endif
                 </div>
-              @endif
+                @endif
+              @endforeach
+            @endforeach
 
-              @if (isset($item->allopass))
-                @foreach ($item->allopass as $payment)
-                  <div class="coin coin-xl" data-url="{{$payment['buyUrl']}}" data-toggle="modal" data-target="#resumeModal">
-                    <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['amount']}} {{$payment['currency']}}
-                  </div>
-                @endforeach
-              @endif
+          </div>
+        @endif
+   -->
+
+   @if (!$item->costs->isEmpty())
+    <div>
+     @foreach ($item->servers as $server)
+       <?php $server->name = trans('general.InvalidServer'); ?>
+       @if ($server->serverId == 0)
+         <h4>{{trans('shop.getForYourAccount')}}</h4>
+         <?php $server->name = trans('general.GlobalAccount'); ?>
+       @else
+         <?php $server->name = Server::find($server->serverId)->name; ?>
+         <h4>{{trans('shop.getForServer', ['servername' => $server->name ] ) }}</h4>
+       @endif
+       @foreach ($item->costs as $cost)
+         @if ($cost->serverId == $server->serverId)
+         <div class="coin coin-xl {{$cost->coin}}-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
+           @if ($cost->price <= 0)
+             {{trans('shop.Free')}}
+           @else
+             {{$cost->price + 0}}
+           @endif
+         </div>
+         @endif
+       @endforeach
+     @endforeach
+
+    </div>
+    @else
+    {{trans('shop.NotAvailable')}}
+    @endif
+
+    @if (isset($item->allopass))
+    @foreach ($item->allopass as $payment)
+     <div class="coin coin-xl" data-url="{{$payment['buyUrl']}}" data-toggle="modal" data-target="#resumeModal">
+       <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['currency']}} {{$payment['amount']}}
+     </div>
+    @endforeach
+  @endif
+
+      @if (isset($item->allopass))
+        @foreach ($item->allopass as $payment)
+          <div class="coin coin-xl" data-url="{{$payment['buyUrl']}}" data-toggle="modal" data-target="#resumeModal">
+            <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['amount']}} {{$payment['currency']}}
+          </div>
+        @endforeach
+      @endif
 
 
       </div>
@@ -95,51 +134,82 @@
               <label for="server-name" class="control-label">Server:</label>
               <input type="text" class="form-control" id="server-name" value="" disabled>
             </div>
+            <!--
             <div class="form-group">
               <label class="control-label">Cost:</label>
               <div class="coin coin-xl coin-modal"  id="cost-modal" disabled></div>
             </div>
-            <hr class="featurette-divider">
-            <div class="col-md-6">
-              <div class="form-group">
-                  {{ Form::label('realname', 'Name') }}
-                  {{ Form::text('realname', Input::old('name'), array('class' => 'form-control')) }}
+          -->
+            <!-- Real money payment -->
+            <div class="form-group">
+              <label class="control-label">Payment mode:</label>
+              <div class="clearfix"></div>
+              @foreach ($item->costs as $cost)
+                @if ($cost->serverId == 0)
+                <input type="radio" class="paymentmode" name="paymentmode" id="payment-paypal" value="true">
+                <label class="radio-inline coin coin-xl radiopayment" for="payment-paypal">
+                  @if ($cost->price <= 0)
+                    {{trans('shop.Free')}}
+                  @else
+                    <img src="/assets/img/paypalButton.png"> {{$cost->price + 0}} EUR
+                  @endif
+                </label>
+                @endif
+              @endforeach
+              @if (isset($item->allopass))
+                @foreach ($item->allopass as $payment)
+                  <input type="radio" class="paymentmode" name="paymentmode" id="payment-{{$payment['type']}}" value="true">
+                  <label class="radio-inline coin coin-xl radiopayment" for="payment-{{$payment['type']}}">
+                    <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['amount']}} {{$payment['currency']}}
+                  </label>
+                @endforeach
+              @endif
+            </div>
+            <!-- ---------------- -->
+            <div id="personaldata" style="visibility:hidden; position: absolute;">
+              <hr class="featurette-divider">
+              <div class="col-md-6">
+                <div class="form-group">
+                    {{ Form::label('realname', 'Name') }}
+                    {{ Form::text('realname', Input::old('name'), array('class' => 'form-control')) }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                    {{ Form::label('surname', 'Surname') }}
+                    {{ Form::text('surname', Input::old('surname'), array('class' => 'form-control')) }}
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                    {{ Form::label('email', 'E-mail') }}
+                    {{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
+                </div>
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                    {{ Form::label('address', 'Address') }}
+                    {{ Form::text('address', Input::old('address'), array('class' => 'form-control')) }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                    {{ Form::label('postalcode', 'Postal Code') }}
+                    {{ Form::text('postalcode', Input::old('postalcode'), array('class' => 'form-control')) }}
+                </div>
+              </div>
+              <div class="col-md-4">
+                {{ Form::label('country', 'Country') }}
+                {{ Form::text('country', @$userlocation["country"], array('class' => 'form-control', 'disabled' => 'disabled')) }}
+              </div>
+              <div class="col-md-8">
+                <div class="form-group">
+                    {{ Form::label('city', 'City') }}
+                    {{ Form::text('city', Input::old('city'), array('class' => 'form-control')) }}
+                </div>
               </div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                  {{ Form::label('surname', 'Surname') }}
-                  {{ Form::text('surname', Input::old('surname'), array('class' => 'form-control')) }}
-              </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                  {{ Form::label('email', 'E-mail') }}
-                  {{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
-              </div>
-            </div>
-            <div class="col-md-8">
-              <div class="form-group">
-                  {{ Form::label('address', 'Address') }}
-                  {{ Form::text('address', Input::old('address'), array('class' => 'form-control')) }}
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="form-group">
-                  {{ Form::label('postalcode', 'Postal Code') }}
-                  {{ Form::text('postalcode', Input::old('postalcode'), array('class' => 'form-control')) }}
-              </div>
-            </div>
-            <div class="col-md-4">
-              {{ Form::label('country', 'Country') }}
-              {{ Form::text('country', @$userlocation["country"], array('class' => 'form-control', 'disabled' => 'disabled')) }}
-            </div>
-            <div class="col-md-8">
-              <div class="form-group">
-                  {{ Form::label('city', 'City') }}
-                  {{ Form::text('city', Input::old('city'), array('class' => 'form-control')) }}
-              </div>
-            </div>
+
             <hr class="featurette-divider">
             <div class="form-group">
               <label for="agreement-checkbox" style="display: block;" class="control-label">Terms and Conditions:</label>

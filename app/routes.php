@@ -17,6 +17,10 @@ Route::group([
 
   Route::get('/', 'HomeController@showWelcome');
 
+	Route::get('/discord', function()
+	{
+	    return "<script>if(self != top) { top.location = 'https://discordapp.com/invite/qxW6U2f'; }</script>";
+	});
 
   Route::controller('user', 'UsersController');
   Route::get('/login', ['as' => 'login', 'uses' => 'UsersController@getLogin']);
@@ -32,21 +36,26 @@ Route::group([
   Route::resource('stats', 'StatsController');
 
   Route::resource('forum/post', 'forumPostsController');
-  Route::resource('forum.topic', 'forumTopicsController');
+  Route::resource('forum/topic', 'forumTopicsController');
+	Route::resource('forum.topic', 'forumTopicsController'); //  /en/forum/2/topic/create
   Route::resource('forum', 'forumCategoriesController', array('except' => array('create', 'store', 'update', 'destroy')));
 
   Route::resource('shop/item.cost', 'shopCostsController');
-  Route::resource('shop/item', 'shopItemsController');
+  Route::resource('shop/item', 'shopItemsController', ['except' => ['store', 'update', 'destroy']]);
   Route::resource('shop', 'shopController', ['as' => 'shop']);
+
+	Route::resource('coins', 'coinItemsController', ['except' => ['store', 'update', 'destroy']]);
 
 });
 
-Route::resource('forum.topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
+Route::resource('forum/topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
 
 Route::resource('shop/item.cost', 'shopCostsController', ['only' => ['update', 'destroy']]);
-Route::resource('shop/item', 'shopItemsController', ['only' => ['update', 'destroy']]);
+Route::resource('shop/item', 'shopItemsController', ['only' => ['store', 'update', 'destroy']]);
 Route::resource('shop', 'shopController', ['as' => 'shop', 'only' => 'update']);
 
 Route::get('payment', ['as' => 'payment', 'uses' => 'PayPalController@postPayment']);
 Route::get('payment/status', ['as' => 'payment.status','uses' => 'PayPalController@getPaymentStatus']);
 Route::get('hypay/store', ['as' => 'payment.status','uses' => 'PayPalController@getPaymentStatus']);
+
+Route::resource('coins', 'coinItemsController', ['only' => ['store','update', 'destroy']]);

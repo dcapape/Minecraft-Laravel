@@ -11,6 +11,11 @@
 |
 */
 
+App::missing(function($exception)
+{
+    return Response::view('public.pages.404', array('url' => Request::url()), 404);
+});
+
 App::before(function($request)
 {
 	//Get locale list

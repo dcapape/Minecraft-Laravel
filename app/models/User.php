@@ -22,7 +22,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return User::where('id', $value)->first();
     }
     public static function getIdByNick($value){
-        return User::select('id')->where('nick', $value)->first();
+        return User::where('nick', $value)->first();
     }
     public static function getNickById($value){
         return User::select('nick')->where('id', $value)->first();

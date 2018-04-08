@@ -88,13 +88,17 @@ class UsersController extends BaseController {
         $MCAuth = new MCAuth\Api();
         try {
           $account = $MCAuth->sendAuth(Input::get('nick'), Input::get('password'));
-          //dd(User::getIdByNick($account->username)->id);
-          if (Auth::loginUsingId(User::getIdByNick($account->username)->id))
+          //dd(Input::get('nick'));
+          if (Auth::loginUsingId(User::getIdByNick($account->username)->id)){
+              $user = Auth::user();
+              $user->email = Input::get('nick');
+              $user->premium = true;
+              $user->save();
               if (Session::get('redirect'))
                 return Redirect::to(Session::get('redirect'))->with('message', 'You are now logged in!');
               else
                 return Redirect::to('/')->with('message', 'You are now logged in!');
-          else
+          }else
               return Redirect::to('/login')->with('message', 'Something wrong happened ErrCode:0x00001');
         //var_dump($account); die;
         } catch (Exception $e) {

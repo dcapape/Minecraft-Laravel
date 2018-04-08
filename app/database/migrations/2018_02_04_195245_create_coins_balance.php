@@ -20,7 +20,6 @@ class CreateCoinsBalance extends Migration {
  			$t->enum('coin', array('real', 'standard', 'premium'));
  			$t->decimal('balance', 15,2);
  			$t->timestamps();
- 			$t->index('uuid');
  		});
  	}
 

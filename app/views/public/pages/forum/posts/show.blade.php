@@ -31,9 +31,11 @@
                   <h5><a href="/profile/{{User::id($post->userId)->nick}}">{{User::id($post->userId)->nick}}</a></h5>
                   <h6>{{Convert::parseMCtoHTML(UPermsUser::getByUUID(User::id($post->userId)->uuid)->prefix)}}<h6>
                   @if (User::isPremium(User::id($post->userId)->uuid))
-                  <img src="https://minecraft-api.com/api/skins/skins.php?player={{User::id($post->userId)->nick}}" style="width:50px" />
+                  <img src="https://visage.surgeplay.com/full/150/{{User::id($post->userId)->nick}}" title="{{User::id($post->userId)->nick}} avatar" />
+                  <!--<img src="https://minecraft-api.com/api/skins/skins.php?player={{User::id($post->userId)->nick}}" style="width:50px" />-->
                   @else
-                  <img src="https://lh3.googleusercontent.com/kcEh6LtwvYN1dUrh1d-ctvtFLbkVdT6ba-8Tr7ePYz6FCmHcuTA5K14Sm1CgEbuKHuqI-gWlifb7XdEKlG2zTw=s400" style="width:50px" />
+                  <img class="flip" src="https://visage.surgeplay.com/full/150/X-Steve" title="{{User::id($post->userId)->nick}} avatar" />
+                  <!--<img src="https://lh3.googleusercontent.com/kcEh6LtwvYN1dUrh1d-ctvtFLbkVdT6ba-8Tr7ePYz6FCmHcuTA5K14Sm1CgEbuKHuqI-gWlifb7XdEKlG2zTw=s400" style="width:50px" />-->
                   @endif
     			     </div>
                <div class="col-md-10 right-col">

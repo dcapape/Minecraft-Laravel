@@ -72,7 +72,7 @@ class shopController extends BaseController {
     {
       // If invalid category
       if (!shopCategory::where('slug', $slug)->count())
-        return View::make('public.errors.404');
+        return App::abort(404);
 
       // Categories list
       $categories = shopCategory::orderBy('weight', 'ASC')->get();

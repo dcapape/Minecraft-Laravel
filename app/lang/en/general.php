@@ -37,9 +37,9 @@ return array(
     'yourMojangEmail'     => 'Your Mojang E-mail',
     'youtMojangPassword'     => 'Your Mojang Password',
     'home'     => 'Home',
-    ''     => '',
-    ''     => '',
-    ''     => '',
+    'error404'     => '404 Page Not Found',
+    'pagenotfound'     => 'Page Not Found',
+    'errormessage'     => 'We can\'t seem to find the page you\'re looking for',
     ''     => '',
     ''     => '',
 );

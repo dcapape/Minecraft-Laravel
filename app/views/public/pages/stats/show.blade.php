@@ -17,11 +17,6 @@
     </form>
   </div>
   <div class="panel-body">
-    @if (User::isPremium($stats->uuid))
-    <img src="https://minecraft-api.com/api/skins/skins.php?player={{$stats->name}}" style="width:50px" />
-    @else
-    <img src="https://lh3.googleusercontent.com/kcEh6LtwvYN1dUrh1d-ctvtFLbkVdT6ba-8Tr7ePYz6FCmHcuTA5K14Sm1CgEbuKHuqI-gWlifb7XdEKlG2zTw=s400" style="width:50px" />
-    @endif
     <table class="table table-bordered table-striped table-hover table-condensed table-responsive">
     	<thead>
     		<tr>
@@ -254,6 +249,22 @@
       </div>
       <button type="submit" class="btn btn-default">{{trans('statistics.Go')}}</button>
     </form>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{$stats->name}}</h3>
+  </div>
+  <div class="panel-body">
+    <center>
+  @if (User::isPremium($stats->uuid))
+  <!--<img src="https://minecraft-api.com/api/skins/skins.php?player={{$stats->name}}" style="width:50px" />-->
+  <img class="flip" src="https://visage.surgeplay.com/full/400/{{$stats->name}}" title="{{$stats->name}} avatar" />
+  @else
+  <!--<img src="https://lh3.googleusercontent.com/kcEh6LtwvYN1dUrh1d-ctvtFLbkVdT6ba-8Tr7ePYz6FCmHcuTA5K14Sm1CgEbuKHuqI-gWlifb7XdEKlG2zTw=s400" style="width:50px" />-->
+  <img class="flip" src="https://visage.surgeplay.com/full/400/X-Steve" title="{{$stats->name}} avatar" />
+  @endif
+    </center>
   </div>
 </div>
 @stop

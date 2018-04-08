@@ -76,8 +76,9 @@ class shopItemsController extends BaseController {
     {
       // If invalid category
       if (!shopItem::where('slug', $slug)->count())
-        return Response::make('Not found', 404);
+        return App::abort(404);
 
+      Session::put('redirect', Request::url());
       $userlocation = GeoIP::getLocation();
 
       // Item selected
@@ -85,6 +86,7 @@ class shopItemsController extends BaseController {
       $item->costs = shopCost::where('itemId', $item->id)->get();
       $item->servers = shopCost::where('itemId', $item->id)->groupBy('serverId')->get();
 
+      // Real Money Item?
       if ($item->allopassId != null){
         $allopass = new Allopass;
         $item->allopass = $allopass->getOnetimePrices($item->allopassId);
