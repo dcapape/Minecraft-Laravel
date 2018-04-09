@@ -29,7 +29,7 @@
         </div>
       </div>
       <div class="col-md-3 right-col shopSidebar">
-        
+
        @if (!$item->costs->isEmpty())
         <div>
          @foreach ($item->servers as $server)
@@ -133,28 +133,33 @@
 
 $( document ).ready(function() {
   $(".coin").on("click", function(){
-    @if (Auth::guest())
-      var redir = true;
-    @else
-      var premium = {{Coin::getBalance(null,"premium")+0}};
-      if (premium >= $(this).data('price')){
-          var redir = false;
-      }else{
-          var redir = true;
-      }
-    @endif
-
-    if (redir){
-      window.location.href = "/coins/?cost="+$(this).data('price');
+    var redir = false;
+    if ($(this).data('coin') == 'premium'){
+      @if (Auth::guest())
+        redir = true;
+      @else
+        var premium = {{Coin::getBalance(null,"premium")+0}};
+        if (premium >= $(this).data('price')){
+            redir = false;
+        }else{
+            redir = true;
+        }
+      @endif
     }else{
-      $('#resumeModal').modal('show');
-      var server = $(this).data('server');
-      var coin   = $(this).data('coin');
-      var price  = $(this).data('price');
-      $('#server-name').val(server);
-      $('#cost-modal').removeClass('premium-xl').removeClass('real-xl').removeClass('standard-xl').addClass(coin+'-xl');
-      $('#cost-modal').html(" "+parseFloat(price));
+      redir = false;
     }
+      if (redir){
+        window.location.href = "/coins/?cost="+$(this).data('price');
+      }else{
+        $('#resumeModal').modal('show');
+        var server = $(this).data('server');
+        var coin   = $(this).data('coin');
+        var price  = $(this).data('price');
+        $('#server-name').val(server);
+        $('#cost-modal').removeClass('premium-xl').removeClass('real-xl').removeClass('standard-xl').addClass(coin+'-xl');
+        $('#cost-modal').html(" "+parseFloat(price));
+      }
+
   });
 
 });

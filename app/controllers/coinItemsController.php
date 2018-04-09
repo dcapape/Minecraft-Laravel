@@ -17,8 +17,10 @@ class coinItemsController extends BaseController {
       $userlocation = GeoIP::getLocation();
       $items = coinsItem::orderBy('weight', 'ASC')->get();
 
-      if(!is_null(Input::get('cost')))
-        Session::flash('cost', Lang::get('shop.notenough', ['cost' => Input::get('cost')+0]));
+      if(!is_null(Input::get('cost'))){
+        if ((Input::get('cost') - Coin::getBalance(null,"premium")) > 0)
+          Session::flash('cost', Lang::get('shop.notenough', ['cost' => (Input::get('cost') - Coin::getBalance(null,"premium"))+0]));
+      }
 
       return View::make('public.pages.coins.index', [
         'items' => $items,
