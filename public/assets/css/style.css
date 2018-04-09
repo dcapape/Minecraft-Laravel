@@ -482,15 +482,15 @@ blockquote{
 .real:before{
 	content: '€';
 }
-.standard:before{
+/*.standard:before{
 	content: 'M¢';
-}
+}*/
 .real-xl:before{
 	content: '€';
 }
-.standard-xl:before{
+/*.standard-xl:before{
 	content: 'M¢';
-}
+}*/
 .premium-xl{
 	background-image: url(/assets/img/golddiamond.png);
   display: inline-block;
@@ -501,6 +501,22 @@ blockquote{
 }
 .premium{
 	background-image: url(/assets/img/golddiamond.png);
+	display: inline-block;
+	background-position: 3px 4px;
+	background-size: 16px;
+	background-repeat: no-repeat;
+	padding-left: 23px;
+}
+.standard-xl{
+	background-image: url(/assets/img/minecoin.png);
+  display: inline-block;
+  background-position: 2px 3px;
+  background-size: 32px;
+  background-repeat: no-repeat;
+  padding-left: 40px;
+}
+.standard{
+	background-image: url(/assets/img/minecoin.png);
 	display: inline-block;
 	background-position: 3px 4px;
 	background-size: 16px;
