@@ -40,6 +40,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
           return false;
     }
     public static function getGroup($user){
+      if ($user->uuid == "")
+        return null;
+      else
         return strtolower(UPermsUser::getByUUID($user->uuid)->groupName);
     }
     public function getAuthIdentifier() {
