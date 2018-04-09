@@ -11,6 +11,9 @@
 
     <div class="panel-body">
       <div class="col-md-12">
+        @if (Session::has('cost'))
+            <div class="alert alert-warning" style="font-size:20px;">{{ Session::get('cost') }}</div>
+        @endif
         @if(@$items)
           @foreach ($items as $item)
             <div class="col-md-4  videoItem" data-href="/coins/{{$item->slug}}" id="vid-{{$item->id}}" data-cost="{{$item->id}}" data-price="{{$item->price}}"  data-name="{{$item->name}}">

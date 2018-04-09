@@ -19,7 +19,7 @@ return array(
     'readmore'     => 'Leer más',
     'agreement'     => 'Acepto los Términos generales y Condiciones de uso.',
     'continue'     => 'Continuar >>',
-    ''     => '',
+    'notenough'     => 'Consigue las :cost Royal Coins que te faltan con alguno de estos paquetes:',
     ''     => '',
     ''     => '',
     ''     => '',

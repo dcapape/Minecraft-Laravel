@@ -19,7 +19,7 @@ return array(
     'readmore'     => 'Read more',
     'agreement'     => 'I agree the General Terms and Conditions.',
     'continue'     => 'Continue >>',
-    ''     => '',
+    'notenough'     => 'Get your :cost Royal Coins left with one of next packages:',
     ''     => '',
     ''     => '',
     ''     => '',

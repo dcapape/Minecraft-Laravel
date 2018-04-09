@@ -29,82 +29,45 @@
         </div>
       </div>
       <div class="col-md-3 right-col shopSidebar">
-
-        <!--
-        @if (!$item->costs->isEmpty())
-          <div>
-            @foreach ($item->servers as $server)
-              <?php $server->name = trans('general.InvalidServer'); ?>
-              @if ($server->serverId == 0)
-                <h4>{{trans('shop.getForYourAccount')}}</h4>
-                <?php $server->name = trans('general.GlobalAccount'); ?>
-              @else
-                <?php $server->name = Server::find($server->serverId)->name; ?>
-                <h4>{{trans('shop.getForServer', ['servername' => $server->name ] ) }}</h4>
-              @endif
-              @foreach ($item->costs as $cost)
-                @if ($cost->serverId == $server->serverId)
-                <div class="coin coin-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
-                  @if ($cost->price <= 0)
-                    {{trans('shop.Free')}}
-                  @else
-                    FROM {{$cost->price + 0}} EUR
-                  @endif
-                </div>
-                @endif
-              @endforeach
-            @endforeach
-
-          </div>
-        @endif
-   -->
-
-   @if (!$item->costs->isEmpty())
-    <div>
-     @foreach ($item->servers as $server)
-       <?php $server->name = trans('general.InvalidServer'); ?>
-       @if ($server->serverId == 0)
-         <h4>{{trans('shop.getForYourAccount')}}</h4>
-         <?php $server->name = trans('general.GlobalAccount'); ?>
-       @else
-         <?php $server->name = Server::find($server->serverId)->name; ?>
-         <h4>{{trans('shop.getForServer', ['servername' => $server->name ] ) }}</h4>
-       @endif
-       @foreach ($item->costs as $cost)
-         @if ($cost->serverId == $server->serverId)
-         <div class="coin coin-xl {{$cost->coin}}-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" data-toggle="modal" data-target="#resumeModal">
-           @if ($cost->price <= 0)
-             {{trans('shop.Free')}}
+        
+       @if (!$item->costs->isEmpty())
+        <div>
+         @foreach ($item->servers as $server)
+           <?php $server->name = trans('general.InvalidServer'); ?>
+           @if ($server->serverId == 0)
+             <h4>{{trans('shop.getForYourAccount')}}</h4>
+             <?php $server->name = trans('general.GlobalAccount'); ?>
            @else
-             {{$cost->price + 0}}
+             <?php $server->name = Server::find($server->serverId)->name; ?>
+             <h4>{{trans('shop.getForServer', ['servername' => $server->name ] ) }}</h4>
            @endif
-         </div>
-         @endif
-       @endforeach
-     @endforeach
+           @foreach ($item->costs as $cost)
+             @if ($cost->serverId == $server->serverId)
 
-    </div>
-    @else
-    {{trans('shop.NotAvailable')}}
-    @endif
+               @if ($cost->coin == "premium")
+                 @if(Auth::guest())
 
-    @if (isset($item->allopass))
-    @foreach ($item->allopass as $payment)
-     <div class="coin coin-xl" data-url="{{$payment['buyUrl']}}" data-toggle="modal" data-target="#resumeModal">
-       <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['currency']}} {{$payment['amount']}}
-     </div>
-    @endforeach
-  @endif
+                 @else
 
-      @if (isset($item->allopass))
-        @foreach ($item->allopass as $payment)
-          <div class="coin coin-xl" data-url="{{$payment['buyUrl']}}" data-toggle="modal" data-target="#resumeModal">
-            <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['amount']}} {{$payment['currency']}}
-          </div>
-        @endforeach
-      @endif
+                 @endif
+               @endif
 
+             <div class="coin coin-xl {{$cost->coin}}-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" >
+               @if ($cost->price <= 0)
+                 {{trans('shop.Free')}}
+               @else
+                 {{$cost->price + 0}}
+               @endif
+             </div>
 
+             @endif
+           @endforeach
+         @endforeach
+
+        </div>
+        @else
+        {{trans('shop.NotAvailable')}}
+        @endif
       </div>
     </div>
   </div>
@@ -118,7 +81,6 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="exampleModalLabel">{{$item->name}}</h4>
         </div>
-        <iframe id="allopassIframe" class="allopassIframe" style="height: 500px; width: 100%; border: 0px solid transparent;"></iframe>
         <div class="modal-body modalForm">
 
           <form class="">
@@ -134,80 +96,10 @@
               <label for="server-name" class="control-label">Server:</label>
               <input type="text" class="form-control" id="server-name" value="" disabled>
             </div>
-            <!--
+
             <div class="form-group">
               <label class="control-label">Cost:</label>
               <div class="coin coin-xl coin-modal"  id="cost-modal" disabled></div>
-            </div>
-          -->
-            <!-- Real money payment -->
-            <div class="form-group">
-              <label class="control-label">Payment mode:</label>
-              <div class="clearfix"></div>
-              @foreach ($item->costs as $cost)
-                @if ($cost->serverId == 0)
-                <input type="radio" class="paymentmode" name="paymentmode" id="payment-paypal" value="true">
-                <label class="radio-inline coin coin-xl radiopayment" for="payment-paypal">
-                  @if ($cost->price <= 0)
-                    {{trans('shop.Free')}}
-                  @else
-                    <img src="/assets/img/paypalButton.png"> {{$cost->price + 0}} EUR
-                  @endif
-                </label>
-                @endif
-              @endforeach
-              @if (isset($item->allopass))
-                @foreach ($item->allopass as $payment)
-                  <input type="radio" class="paymentmode" name="paymentmode" id="payment-{{$payment['type']}}" value="true">
-                  <label class="radio-inline coin coin-xl radiopayment" for="payment-{{$payment['type']}}">
-                    <img src="/assets/img/allopass/{{$payment['type']}}.png"> {{$payment['amount']}} {{$payment['currency']}}
-                  </label>
-                @endforeach
-              @endif
-            </div>
-            <!-- ---------------- -->
-            <div id="personaldata" style="visibility:hidden; position: absolute;">
-              <hr class="featurette-divider">
-              <div class="col-md-6">
-                <div class="form-group">
-                    {{ Form::label('realname', 'Name') }}
-                    {{ Form::text('realname', Input::old('name'), array('class' => 'form-control')) }}
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="form-group">
-                    {{ Form::label('surname', 'Surname') }}
-                    {{ Form::text('surname', Input::old('surname'), array('class' => 'form-control')) }}
-                </div>
-              </div>
-              <div class="col-md-12">
-                <div class="form-group">
-                    {{ Form::label('email', 'E-mail') }}
-                    {{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
-                </div>
-              </div>
-              <div class="col-md-8">
-                <div class="form-group">
-                    {{ Form::label('address', 'Address') }}
-                    {{ Form::text('address', Input::old('address'), array('class' => 'form-control')) }}
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="form-group">
-                    {{ Form::label('postalcode', 'Postal Code') }}
-                    {{ Form::text('postalcode', Input::old('postalcode'), array('class' => 'form-control')) }}
-                </div>
-              </div>
-              <div class="col-md-4">
-                {{ Form::label('country', 'Country') }}
-                {{ Form::text('country', @$userlocation["country"], array('class' => 'form-control', 'disabled' => 'disabled')) }}
-              </div>
-              <div class="col-md-8">
-                <div class="form-group">
-                    {{ Form::label('city', 'City') }}
-                    {{ Form::text('city', Input::old('city'), array('class' => 'form-control')) }}
-                </div>
-              </div>
             </div>
 
             <hr class="featurette-divider">
@@ -242,43 +134,29 @@
 $( document ).ready(function() {
   $(".coin").on("click", function(){
     @if (Auth::guest())
-      var auth = false;
+      var redir = true;
     @else
-      var auth = true;
+      var premium = {{Coin::getBalance(null,"premium")+0}};
+      if (premium >= $(this).data('price')){
+          var redir = false;
+      }else{
+          var redir = true;
+      }
     @endif
 
-    if (auth){
-      //alert($(this).data('cost'));
+    if (redir){
+      window.location.href = "/coins/?cost="+$(this).data('price');
     }else{
-      window.location.href = "/login";
+      $('#resumeModal').modal('show');
+      var server = $(this).data('server');
+      var coin   = $(this).data('coin');
+      var price  = $(this).data('price');
+      $('#server-name').val(server);
+      $('#cost-modal').removeClass('premium-xl').removeClass('real-xl').removeClass('standard-xl').addClass(coin+'-xl');
+      $('#cost-modal').html(" "+parseFloat(price));
     }
-
   });
 
-
-  $('#resumeModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget); // Button that triggered the modal
-    var server = button.data('server'); // Extract info from data-* attributes
-    var coin   = button.data('coin');
-    var price   = button.data('price');
-    var url   = button.data('url');
-
-    if (url != null){
-      $('.allopassIframe').attr('src',url).show();
-      $('.modalForm').hide();
-    }else{
-      $('.allopassIframe').hide();
-      $('.modalForm').show();
-    }
-
-    var modal = $(this);
-    //modal.find('.modal-title').text('');
-    modal.find('.modal-body #server-name').val(server);
-
-    // Modal cost
-    $('#cost-modal').removeClass('premium-xl').removeClass('real-xl').removeClass('standard-xl').addClass(coin+'-xl');
-    modal.find('#cost-modal').html(" "+parseFloat(price));
-  })
 });
 
 @stop

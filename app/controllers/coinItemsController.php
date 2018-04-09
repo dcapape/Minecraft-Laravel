@@ -17,7 +17,13 @@ class coinItemsController extends BaseController {
       $userlocation = GeoIP::getLocation();
       $items = coinsItem::orderBy('weight', 'ASC')->get();
 
-      return View::make('public.pages.coins.index', ['items' => $items, 'userlocation' => $userlocation]);
+      if(!is_null(Input::get('cost')))
+        Session::flash('cost', Lang::get('shop.notenough', ['cost' => Input::get('cost')+0]));
+
+      return View::make('public.pages.coins.index', [
+        'items' => $items,
+        'userlocation' => $userlocation
+      ]);
     }
 
     /**
@@ -84,6 +90,7 @@ class coinItemsController extends BaseController {
         $allopass = new Allopass;
         $item->allopass = $allopass->getOnetimePrices($item->allopassId);
       }
+
 
       return View::make('public.pages.coins.show', ['item' => $item, 'userlocation' => $userlocation]);
 
