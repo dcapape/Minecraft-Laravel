@@ -63,4 +63,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     public function getReminderEmail(){
         return $this->email;
     }
+    public static function isAvailable($username){
+      // make request
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, "https://visage.surgeplay.com/full/16/".strtolower($username));
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      $output = curl_exec($ch);
+
+      if(curl_getinfo($ch, CURLINFO_HTTP_CODE) == 400) {
+        curl_close($ch);
+        return false;
+      }else{
+        curl_close($ch);
+        return true;
+      }
+
+    }
 }

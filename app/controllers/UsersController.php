@@ -40,10 +40,13 @@ class UsersController extends BaseController {
         if ($validator->passes()) {
             try {
             //var_dump($MCAuth->usernameToUuid(Input::get('nick')));
-                $uuid = @$MCAuth->usernameToUuid(Input::get('nick'));
-                throw new InvalidArgumentException('tripleInteger function only accepts integers. Input was: '.$uuid);
+                //$uuid = @$MCAuth->usernameToUuid(Input::get('nick'));
+                //throw new InvalidArgumentException('tripleInteger function only accepts integers. Input was: '.$uuid);
                 //$uuid = null;
-                if (isset($uuid)){
+                //if (isset($uuid)){
+                
+                ///https://visage.surgeplay.com/full/400/nickname
+                if ( User::isAvailable(Input::get('nick')) ) {
                     return Redirect::to('/register')->with('message', 'The following errors occurred: <br> This nickname is already taken');
                 }else{
                     $user = new User;
