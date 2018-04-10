@@ -44,12 +44,14 @@ class UsersController extends BaseController {
                 //throw new InvalidArgumentException('tripleInteger function only accepts integers. Input was: '.$uuid);
                 //$uuid = null;
                 //if (isset($uuid)){
-                
+
                 ///https://visage.surgeplay.com/full/400/nickname
                 if ( User::isAvailable(Input::get('nick')) ) {
                     return Redirect::to('/register')->with('message', 'The following errors occurred: <br> This nickname is already taken');
                 }else{
+                    $uuid = new UuidGen;
                     $user = new User;
+                    $user->uuid = $uuid->generateUuid(Input::get('nick'));
                     $user->nick = Input::get('nick');
                     $user->email = Input::get('email');
                     $user->password = Hash::make(Input::get('password'));
