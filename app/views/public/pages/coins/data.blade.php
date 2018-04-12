@@ -56,18 +56,20 @@
           @endif
 
 
-         {{ Form::open(array('route' => 'coins.store')) }}
+         {{-- Form::open(array('route' => 'coins.update', 0, 'method' => 'PUT')) --}}
+         {{ Form::model($item, array('route' => array('coins.update', $item->rewardQty+0), 'method' => 'PUT')) }}
 
             <input type="hidden" name="itemId" value="{{$item->id}}">
-            <input type="hidden" name="nonpremium-agreement" value="{{$nonpremiumagreement}}">
+            <input type="hidden" name="nonpremiumagreement" value="{{$nonpremiumagreement}}">
             <input type="hidden" name="agreement" value="{{$agreement}}">
+            <input type="hidden" name="paymentmode" value="{{$paymentmode}}">
 
             <div id="personaldata" style="">
               <hr class="featurette-divider">
               <div class="col-md-6">
                 <div class="form-group">
                     {{ Form::label('realname', 'Name') }}
-                    {{ Form::text('realname', Input::old('name', Auth::user()->name), array('class' => 'form-control')) }}
+                    {{ Form::text('realname', Input::old('realname', Auth::user()->realname), array('class' => 'form-control')) }}
                 </div>
               </div>
               <div class="col-md-6">
@@ -101,7 +103,7 @@
               <div class="col-md-8">
                 <div class="form-group">
                     {{ Form::label('city', 'City') }}
-                    {{ Form::text('city', Input::old('city'), array('class' => 'form-control')) }}
+                    {{ Form::text('city', Input::old('city', Auth::user()->city), array('class' => 'form-control')) }}
                 </div>
               </div>
             </div>

@@ -11,7 +11,8 @@
 		"mcamara/laravel-localization": "0.15.*",
 		"paypal/rest-api-sdk-php": "*",
 		"genert/bbcode": "^1.0",
-		"kgkg/allopass-apikit-php5": "^1.0"
+		"kgkg/allopass-apikit-php5": "^1.0",
+		"ramsey/uuid": "^3.7"
 	},
 	"autoload": {
 		"classmap": [

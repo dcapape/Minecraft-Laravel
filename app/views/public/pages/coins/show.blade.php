@@ -101,10 +101,10 @@
               <label for="agreement-checkbox" class="checkbox-inline" >{{trans('shop.agreement')}} <a href="/general-terms-and-conditions" target="_blank">{{trans('shop.readmore')}}</a></label>
             </div>
             @if (Auth::user()->premium)
-              <input type="hidden"  id="nonpremium-checkbox" name="nonpremium-agreement" value="true">
+              <input type="hidden"  id="nonpremium-checkbox" name="nonpremiumagreement" value="true">
             @else
             <div class="form-group">
-              <input type="checkbox"  id="nonpremium-checkbox" name="nonpremium-agreement" value="true">
+              <input type="checkbox"  id="nonpremium-checkbox" name="nonpremiumagreement" value="true">
               <label for="nonpremium-checkbox" class="checkbox-inline">I understand the risks using an unofficial Mojang Account. <a href="/risks-agreement-unofficial-accounts" target="_blank">{{trans('shop.readmore')}}</a></label>
             </div>
             @endif
@@ -248,7 +248,7 @@
     $("#payment-paypal").click();
 
 
-    
+
 
 });
 

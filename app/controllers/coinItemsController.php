@@ -4,7 +4,7 @@ class coinItemsController extends BaseController {
     public function __construct() {
         $this->beforeFilter('csrf', array('on' => 'post'));
         $this->beforeFilter('auth', array('except' => ['index']));
-        $this->beforeFilter('admin', array('except' => ['index', 'show', 'create']));
+        $this->beforeFilter('admin', array('except' => ['index', 'show', 'create', 'edit', 'update']));
     }
 
     /**
@@ -61,12 +61,14 @@ class coinItemsController extends BaseController {
           $item->allopass = $allopass->getOnetimePrices($item->allopassId);
         }
 
-        return View::make('public.pages.coins.data', [
-          'item' => $item,
-          'userlocation' => $userlocation,
-          'agreement' => Input::get('agreement'),
-          'nonpremiumagreement' => Input::get('nonpremium-agreement')
-          ]);
+        Session::flash('item', $item);
+        Session::flash('itemId', Input::get('itemId'));
+        Session::flash('userlocation', $userlocation);
+        Session::flash('agreement', Input::get('agreement'));
+        Session::flash('nonpremiumagreement', Input::get('nonpremiumagreement'));
+        Session::flash('paymentmode', Input::get('paymentmode'));
+        return Redirect::route('coins.edit', $item->rewardQty+0);
+
       } else {
           return Redirect::back()->with('message', 'The following errors occurred: ')->withErrors($validator)->withInput();
       }
@@ -94,7 +96,7 @@ class coinItemsController extends BaseController {
       }
 
 
-      return View::make('public.pages.coins.show', ['item' => $item, 'userlocation' => $userlocation]);
+      return View::make('public.pages.coins.show', ['id' => 0, 'item' => $item, 'userlocation' => $userlocation]);
 
       //TODO STRIPE https://medium.com/justlaravel/how-to-integrate-stripe-payment-gateway-in-laravel-94b145ce4ede
 
@@ -108,7 +110,25 @@ class coinItemsController extends BaseController {
      */
     public function edit($id)
     {
-      // TODO
+        if (Session::get('itemId') == null) {
+          $item = coinsItem::where('id', Input::old('itemId') )->first();
+        }else{
+          $item = coinsItem::where('id', Session::get('itemId') )->first();
+        }
+
+      // Real Money Item?
+      if ($item->allopassId != null){
+        $allopass = new Allopass;
+        $item->allopass = $allopass->getOnetimePrices($item->allopassId);
+      }
+
+      return View::make('public.pages.coins.data', [
+        'item' => $item,
+        'userlocation' => GeoIP::getLocation(),
+        'agreement' => (null !==Session::get('agreement')) ? Session::get('agreement') : Input::old('agreement'),
+        'nonpremiumagreement' => (null !==Session::get('nonpremiumagreement')) ? Session::get('nonpremiumagreement') : Input::old('nonpremiumagreement'),
+        'paymentmode' => (null !==Session::get('paymentmode')) ? Session::get('paymentmode') : Input::old('paymentmode')
+      ]);
     }
 
     /**
@@ -119,7 +139,26 @@ class coinItemsController extends BaseController {
      */
     public function update($id)
     {
-        // TODO
+      $validator = Validator::make(Input::all(), coinsItem::$step2);
+      if ($validator->passes()) {
+        if (!coinsItem::where('id', Input::get('itemId'))->count())
+          return App::abort(404);
+
+        dd(Input::all());
+        return "ghola";
+        /*if ( ! $exception instanceof Exception) {
+    		    $exception = new ErrorException(
+    			    $exception->getMessage(),
+    			    $exception->getCode(),
+    			    E_ERROR,
+    			    $exception->getFile(),
+    			    $exception->getLine()
+    		    );
+    	    } 148*/
+
+      } else {
+          return Redirect::back()->with('message', 'The following errors occurred: ')->withErrors($validator)->withInput();
+      }
     }
 
     /**
