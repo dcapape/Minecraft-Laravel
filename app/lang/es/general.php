@@ -7,7 +7,7 @@ return array(
     'logout'     => 'CERRAR SESIÓN',
     'news'     => 'Noticias',
     'maps'     => 'Mapas',
-    'stats'     => 'Estadísticas',
+    'stats'     => 'Estadisticas',
     'global_stats'     => 'Estadísticas Globales',
     'forums'     => 'Foro',
     'shop'     => 'Tienda',
