@@ -47,7 +47,7 @@
       </div>
       <div class="col-md-9 right-col">
         <div class="col-md-8 paymentWindow">
-
+          <h4>{{trans('shop.billingData')}}:</h4>
           @if (Session::has('message'))
               <div class="alert alert-info">{{ Session::get('message') }}</div>
           @endif
@@ -57,7 +57,8 @@
 
 
          {{-- Form::open(array('route' => 'coins.update', 0, 'method' => 'PUT')) --}}
-         {{ Form::model($item, array('route' => array('coins.update', $item->rewardQty+0), 'method' => 'PUT')) }}
+         {{-- Form::model($item, array('route' => array('coins.update', $item->rewardQty+0), 'method' => 'PUT')) --}}
+         {{ Form::open(array('route' => array('coins.buy', $slug))) }}
 
             <input type="hidden" name="itemId" value="{{$item->id}}">
             <input type="hidden" name="nonpremiumagreement" value="{{$nonpremiumagreement}}">

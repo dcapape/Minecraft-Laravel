@@ -44,8 +44,13 @@ Route::group([
   Route::resource('shop/item', 'shopItemsController', ['except' => ['store', 'update', 'destroy']]);
   Route::resource('shop', 'shopController', ['as' => 'shop']);
 
-	Route::resource('coins', 'coinItemsController', ['except' => ['store', 'update', 'destroy']]);
-
+	//Route::resource('coins', 'coinItemsController', ['except' => ['store', 'update', 'destroy']]);
+	Route::get('/coins', 							['uses' => 'coinItemsController@index', 'as' => 'coins.index']);
+	Route::get('/coins/status', 			['uses' => 'coinItemsController@getStatus', 'as' => 'coins.status']);
+  Route::get('/coins/{slug}', 			['uses' => 'coinItemsController@show', 'as' => 'coins.show']);
+	Route::get('/coins/data/{slug}', 	['uses' => 'coinItemsController@getData']);
+	Route::post('/coins/data/{slug}', ['uses' => 'coinItemsController@postData', 'as' => 'coins.data']);
+  Route::post('/coins/buy/{slug}', 	['uses' => 'coinItemsController@postBuy', 'as' => 'coins.buy']);
 });
 
 Route::resource('forum/topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
@@ -56,6 +61,6 @@ Route::resource('shop', 'shopController', ['as' => 'shop', 'only' => 'update']);
 
 Route::get('payment', ['as' => 'payment', 'uses' => 'PayPalController@postPayment']);
 Route::get('payment/status', ['as' => 'payment.status','uses' => 'PayPalController@getPaymentStatus']);
-Route::get('hypay/store', ['as' => 'payment.status','uses' => 'PayPalController@getPaymentStatus']);
+Route::get('hypay/store', ['as' => 'payment2.status','uses' => 'PayPalController@getPaymentStatus']);
 
-Route::resource('coins', 'coinItemsController', ['only' => ['store','update', 'destroy']]);
+//Route::resource('coins', 'coinItemsController', ['only' => ['store','update', 'destroy']]);

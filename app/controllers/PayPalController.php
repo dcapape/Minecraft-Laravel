@@ -23,82 +23,23 @@ class PaypalController extends BaseController
         $this->_api_context->setConfig($paypal_conf['settings']);
     }
 
-    public function postPayment()
-    {
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
-        $item_1 = new Item();
-        $item_1->setName('Item 1') // item name
-            ->setCurrency('EUR')
-            ->setQuantity(1)
-            ->setPrice('2'); // unit price
-        $item_2 = new Item();
-        $item_2->setName('Item 2')
-            ->setCurrency('EUR')
-            ->setQuantity(1)
-            ->setPrice('4');
-        // add item to list
-        $item_list = new ItemList();
-        $item_list->setItems(array($item_1, $item_2));
-
-        $details = new Details();
-        $details->setTax(2)
-            ->setSubtotal(6);
-
-        $amount = new Amount();
-        $amount->setCurrency('EUR')
-            ->setTotal(8)
-            ->setDetails($details);
-
-        $transaction = new Transaction();
-        $transaction->setAmount($amount)
-            ->setItemList($item_list)
-            ->setDescription('Your transaction description')
-            ->setInvoiceNumber(uniqid());
-        $redirect_urls = new RedirectUrls();
-        $redirect_urls->setReturnUrl(URL::route('payment.status'))
-            ->setCancelUrl(URL::route('payment.status'));
-        $payment = new Payment();
-        $payment->setIntent('Sale')
-            ->setPayer($payer)
-            ->setRedirectUrls($redirect_urls)
-            ->setTransactions(array($transaction));
-        try {
-            $payment->create($this->_api_context);
-        } catch (\PayPal\Exception\PPConnectionException $ex) {
-            if (\Config::get('app.debug')) {
-                echo "Exception: " . $ex->getMessage() . PHP_EOL;
-                $err_data = json_decode($ex->getData(), true);
-                exit;
-            } else {
-                die('Some error occur, sorry for inconvenient');
-            }
-        }
-        foreach($payment->getLinks() as $link) {
-            if($link->getRel() == 'approval_url') {
-                $redirect_url = $link->getHref();
-                break;
-            }
-        }
-        // add payment ID to session
-        Session::put('paypal_payment_id', $payment->getId());
-        if(isset($redirect_url)) {
-            // redirect to paypal
-            return Redirect::away($redirect_url);
-        }
-        return Redirect::route('original.route')
-            ->with('error', 'Unknown error occurred');
-    }
-
     public function getPaymentStatus()
     {
         // Get the payment ID before session clear
         $payment_id = Session::get('paypal_payment_id');
+        //dd(Session::get('transId'));
+        $transId = Session::get('transId');
+        $sell = coinsSell::find($transId);
+        $sell->paymentId = $payment_id;
+
         // clear the session payment ID
+        Session::forget('transId');
         Session::forget('paypal_payment_id');
         if (empty(Input::get('PayerID')) || empty(Input::get('token'))) {
-            return Redirect::route('original.route')
-                ->with('error', 'Payment failed');
+            $sell->status = "FAILED";
+            $sell->save();
+            return Redirect::route('coins.status')
+                ->with('status', 'failed');
         }
         $payment = Payment::get($payment_id, $this->_api_context);
         // PaymentExecution object includes information necessary
@@ -110,12 +51,36 @@ class PaypalController extends BaseController
 
         //Execute the payment
         $result = $payment->execute($execution, $this->_api_context);
-        echo '<pre>';print_r($result);echo '</pre>';exit; // DEBUG RESULT, remove it later
+        //echo '<pre>';print_r($result);echo '</pre>';exit; // DEBUG RESULT, remove it later
         if ($result->getState() == 'approved') { // payment made
-            return Redirect::route('original.route')
-                ->with('success', 'Payment success');
+
+            $item = coinsItem::where('id', $sell->itemId)->first();
+//dd(Coin::where('uuid', $sell->uuid)->where('coin', $item->rewardCoin)->count());
+            if (Coin::where('uuid', $sell->uuid)->where('coin', $item->rewardCoin)->count() > 0){
+              $coin = Coin::where('uuid', $sell->uuid)->where('coin', $item->rewardCoin)->first();
+              $coin->balance = $coin->balance + $item->rewardQty;
+            }else{
+              $coin = new Coin;
+              $coin->balance = $item->rewardQty;
+              $coin->coin = $item->rewardCoin;
+              $coin->uuid = $sell->uuid;
+              $coin->nick = $sell->nick;
+            }
+            if ($coin->save()){
+              $sell->status = "APPROVED";
+              $sell->save();
+              return Redirect::route('coins.status')
+                  ->with('status', 'success');
+            }else{
+              $sell->status = "FAILED";
+              $sell->save();
+              return Redirect::route('coins.status')
+                  ->with('status', 'failed');
+            }
         }
-        return Redirect::route('original.route')
-            ->with('error', 'Payment failed');
+        $sell->status = "FAILED";
+        $sell->save();
+        return Redirect::route('coins.status')
+            ->with('status', 'failed');
     }
 }

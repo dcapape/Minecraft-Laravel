@@ -56,7 +56,7 @@
           @endif
 
 
-         {{ Form::open(array('route' => 'coins.store')) }}
+         {{ Form::open(array('route' => array('coins.data', $slug))) }}
 
             <input type="hidden" name="itemId" value="{{$item->id}}">
 
@@ -79,7 +79,7 @@
             </div>
 
             @if (!$item->price == null)
-              <input type="radio" class="paymentmode" name="paymentmode" id="payment-paypal" data-price="{{$item->price + 0}} EUR" value="payment-paypal">
+              <input type="radio" class="paymentmode" name="paymentmode" id="payment-paypal" data-price="{{Currency::fromCountryCode($userlocation['isoCode'], $item->price)}}" value="payment-paypal">
               <label class="radio-inline coin coin-xl radiopayment" for="payment-paypal">
                   <img src="/assets/img/paypalButton.png">
               </label>
@@ -129,28 +129,6 @@
   </div>
 
 
-  @if (!Auth::guest())
-  <div class="modal fade" id="resumeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="exampleModalLabel">{{$item->name}}</h4>
-        </div>
-        <iframe id="allopassIframe" class="allopassIframe" style="height: 500px; width: 100%; border: 0px solid transparent;"></iframe>
-        <div class="modal-body modalForm">
-
-
-        </div>
-        <div class="modal-footer modalForm">
-          <button type="button" class="btn btn-default" data-dismiss="modal">{{trans('shop.Close')}}</button>
-          <button type="button" class="btn btn-primary">{{trans('shop.Buy')}}</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  @endif
 @stop
 
 @section('script')
@@ -194,21 +172,6 @@
 
   $( document ).ready(function() {
 
-    $(".coin").on("click", function(){
-      @if (Auth::guest())
-        var auth = false;
-      @else
-        var auth = true;
-      @endif
-
-      if (auth){
-        //alert($(this).data('cost'));
-      }else{
-        window.location.href = "/login";
-      }
-
-    });
-
     $(".paymentmode").on("click", function(){
       var value = $(this).attr('id');
       $("#cost").val($(this).data('price'));
@@ -221,34 +184,7 @@
       $("#"+value).click();
     });
 
-    $('#resumeModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget); // Button that triggered the modal
-      var server = button.data('server'); // Extract info from data-* attributes
-      var coin   = button.data('coin');
-      var price   = button.data('price');
-      var url   = button.data('url');
-
-      if (url != null){
-        $('.allopassIframe').attr('src',url).show();
-        $('.modalForm').hide();
-      }else{
-        $('.allopassIframe').hide();
-        $('.modalForm').show();
-      }
-
-      var modal = $(this);
-      //modal.find('.modal-title').text('');
-      modal.find('.modal-body #server-name').val(server);
-
-      // Modal cost
-      $('#cost-modal').removeClass('premium-xl').removeClass('real-xl').removeClass('standard-xl').addClass(coin+'-xl');
-      modal.find('#cost-modal').html(" "+parseFloat(price));
-    })
-
     $("#payment-paypal").click();
-
-
-
 
 });
 

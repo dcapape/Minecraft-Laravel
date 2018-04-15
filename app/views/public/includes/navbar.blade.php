@@ -18,7 +18,7 @@
         </ul>
       @else
         <ul class="nav navbar-nav visible-xs" style="margin: 0px">
-          <li style="float: left;padding: 9px;"><a href="{{ route('profile') }}"><div class="premium" style="background-position: 3px 2px;">{{ Coin::getBalance(null,"premium")+0 }}</div></a></li>
+          <li style="float: left;padding: 9px;"><a href="{{ route('coins.index') }}"><div class="premium" style="background-position: 3px 2px;">{{ Coin::getBalance(null,"premium")+0 }}</div></a></li>
           <li style="float: left;padding: 9px;"><a href="{{ route('profile') }}"><div class="standard" style="background-position: 3px 2px;">{{ Coin::getBalance()+0 }}</div></a></li>
           <li style="float: left;padding: 9px;" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->nick }}<b class="caret"></b></a>

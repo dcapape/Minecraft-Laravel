@@ -19,7 +19,7 @@ class EnrichUsersTable extends Migration {
 				$table->string('postalcode')->after('remember_token')->nullable();
 				$table->string('address')->after('remember_token')->nullable();
 				$table->string('surname')->after('remember_token')->nullable();
-				$table->string('name')->after('remember_token')->nullable();
+				$table->string('realname')->after('remember_token')->nullable();
 		});
 	}
 

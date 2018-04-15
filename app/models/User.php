@@ -42,8 +42,17 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     public static function getGroup($user){
       if ($user->uuid == "")
         return null;
-      else
-        return strtolower(UPermsUser::getByUUID($user->uuid)->groupName);
+      else{
+        if(UPermsUser::getByUUID($user->uuid) != null){
+            if (UPermsUser::getByUUID($user->uuid)->groupName != "")
+              return strtolower(UPermsUser::getByUUID($user->uuid)->groupName);
+            else
+              return "No group";
+        }else{
+            return "No group";
+        }
+      }
+
     }
     public function getAuthIdentifier() {
         return $this->getKey();
@@ -64,7 +73,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->email;
     }
     public static function isAvailable($username){
-      // make request
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, "https://visage.surgeplay.com/full/16/".strtolower($username));
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

@@ -23,7 +23,7 @@
 		                </ul>
 									@else
 										<ul class="nav navbar-nav head-accountbar pull-right">
-											<li><a href="{{ route('profile') }}"><div class="premium" style="background-position: 3px 2px;">{{ Coin::getBalance(null,"premium")+0 }}</div></a></li>
+											<li><a href="{{ route('coins.index') }}"><div class="premium" style="background-position: 3px 2px;">{{ Coin::getBalance(null,"premium")+0 }}</div></a></li>
 											<li><a href="{{ route('profile') }}"><div class="standard" style="background-position: 3px 2px;">{{ Coin::getBalance()+0 }}</div></a></li>
 											<li class="dropdown">
 							          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->nick }}<b class="caret"></b></a>
