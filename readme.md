@@ -12,4 +12,4 @@ Documentation for the entire framework can be found on the [Laravel website](htt
 
 ### License
 
-The Minecraft-Laravel is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+The Minecraft-Laravel is open-sourced software licensed under the [Apache License 2.0](https://github.com/dcapape/Minecraft-Laravel/blob/master/LICENSE)
