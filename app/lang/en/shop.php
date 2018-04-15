@@ -26,5 +26,11 @@ return array(
     'failed'     => '/O.O\  Oh! Payment Failed!',
     'faileddetails'     => 'Your payment was declined. Maybe you want to try another payment method.',
     'redirect'     => 'You will be redirected to the shop in 5 seconds...',
-    ''     => '',
+    'name'     => 'Name',
+    'surname'     => 'Surname',
+    'email'     => 'E-mail',
+    'address'     => 'Address',
+    'postalcode'     => 'Postal Code',
+    'country'     => 'Country',
+    'city'     => 'City',
 );

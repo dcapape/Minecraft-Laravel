@@ -26,5 +26,11 @@ return array(
     'failed'     => '/O.O\  Oh! Algo falló!',
     'faileddetails'     => 'Tu pago fue rechazado. Quizás quieras intentar utilizar otro método de pago.',
     'redirect'     => 'Serás redirigido a la tienda en 5 segundos...',
-    ''     => '',
+    'name'     => 'Nombre',
+    'surname'     => 'Apellidos',
+    'email'     => 'Correo electrónico',
+    'address'     => 'Dirección',
+    'postalcode'     => 'Código Postal',
+    'country'     => 'País',
+    'city'     => 'Ciudad',
 );

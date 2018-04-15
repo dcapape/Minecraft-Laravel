@@ -69,41 +69,41 @@
               <hr class="featurette-divider">
               <div class="col-md-6">
                 <div class="form-group">
-                    {{ Form::label('realname', 'Name') }}
+                    {{ Form::label('realname', trans('shop.name')) }}
                     {{ Form::text('realname', Input::old('realname', Auth::user()->realname), array('class' => 'form-control')) }}
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                    {{ Form::label('surname', 'Surname') }}
+                    {{ Form::label('surname', trans('shop.surname')) }}
                     {{ Form::text('surname', Input::old('surname', Auth::user()->surname), array('class' => 'form-control')) }}
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                    {{ Form::label('email', 'E-mail') }}
+                    {{ Form::label('email', trans('shop.email')) }}
                     {{ Form::text('email', Input::old('email', Auth::user()->email), array('class' => 'form-control')) }}
                 </div>
               </div>
               <div class="col-md-8">
                 <div class="form-group">
-                    {{ Form::label('address', 'Address') }}
+                    {{ Form::label('address', trans('shop.address')) }}
                     {{ Form::text('address', Input::old('address', Auth::user()->address), array('class' => 'form-control')) }}
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="form-group">
-                    {{ Form::label('postalcode', 'Postal Code') }}
+                    {{ Form::label('postalcode', trans('shop.postalcode')) }}
                     {{ Form::text('postalcode', Input::old('postalcode', Auth::user()->postalcode), array('class' => 'form-control')) }}
                 </div>
               </div>
               <div class="col-md-4">
-                {{ Form::label('country', 'Country') }}
+                {{ Form::label('country', trans('shop.country')) }}
                 {{ Form::text('country', @$userlocation["country"], array('class' => 'form-control', 'disabled' => 'disabled')) }}
               </div>
               <div class="col-md-8">
                 <div class="form-group">
-                    {{ Form::label('city', 'City') }}
+                    {{ Form::label('city', trans('shop.city')) }}
                     {{ Form::text('city', Input::old('city', Auth::user()->city), array('class' => 'form-control')) }}
                 </div>
               </div>
