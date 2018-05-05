@@ -1,6 +1,6 @@
 <?php
 
-$json = file_get_contents('https://mcapi.us/server/status?ip=mundodisco.tk&port=25565');
+$json = file_get_contents('https://mcapi.us/server/status?ip='.Config::get('serverStatus.host', 'localhost').'&port='.Config::get('serverStatus.port', '25565'));
 $obj = json_decode($json, true);
 
 $show = $obj;

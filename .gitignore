@@ -23,6 +23,7 @@ Homestead.json
 app/config/remote.php
 app/config/queue.php
 app/config/apis.php
+app/config/serverStatus.php
 public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/core/includes/navbar.php
 public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s3.png
 public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s2.png

@@ -1,0 +1,7 @@
+<?php
+return array(
+
+    'host' => 'minegamers.pro',
+    'port' => '25565',
+
+);
