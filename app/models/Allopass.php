@@ -45,6 +45,23 @@ class Allopass
     return $markets;
   }
 
+  public static function checkSignature($parameters) {
+
+    $signature = $parameters['api_sig'];
+    unset($parameters['api_sig']);
+    ksort($parameters);
+    $secretKey = Config::get('allopass.secret');
+    $string2compute = '';
+    foreach ($parameters as $name => $value) {
+     $string2compute .= $name . $value;
+    }
+
+    if (sha1($string2compute . $secretKey) == $signature)
+     return true;
+    else
+     return false;
+
+  }
 
   public static function getIP() {
       $ipaddress = '';
