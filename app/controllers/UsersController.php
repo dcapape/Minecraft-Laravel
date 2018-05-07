@@ -35,7 +35,7 @@ class UsersController extends BaseController {
         } catch (Exception $e) {
             return Redirect::to('/register')->with('message', 'The following errors occurred: <br> ' . $e->getMessage());
         }
-      }else{
+      }else{ // NO PREMIUM ACCOUNT
         $validator = Validator::make(Input::all(), User::$rules);
         if ($validator->passes()) {
             try {
@@ -56,14 +56,23 @@ class UsersController extends BaseController {
                     $user->email = Input::get('email');
                     $user->password = Hash::make(Input::get('password'));
                     $user->premium = false;
+                    $user->confirmationCode = Convert::random(60);
                     $user->save();
-                    if (Auth::loginUsingId($user->id))
-                        return Redirect::to('/')->with('message', 'Thanks for registering!');
-                    else
-                        return Redirect::to('/login')->with('message', 'Thanks for registering!');
+
+                    Mail::send('emails.'.LaravelLocalization::getCurrentLocale().'.verify', ['confirmationCode' => $user->confirmationCode], function($message) {
+                        $message->to(Input::get('email'), Input::get('nick'));
+                        $message->subject(trans('auth.emailSubject'));
+                    });
+
+                    return Redirect::to('/login')->with('message', 'Thanks for signing up! Please check your email and follow the instructions to complete the sign up process');
+
+                    //if (Auth::loginUsingId($user->id))
+                    //    return Redirect::to('/')->with('message', 'Thanks for registering!');
+                    //else
+                    //    return Redirect::to('/login')->with('message', 'Thanks for registering!');
                 }
 
-            } catch (InvalidArgumentException $e) {
+            /*} catch (InvalidArgumentException $e) {
                 $user = new User;
                 $user->nick = Input::get('nick');
                 $user->email = Input::get('email');
@@ -73,7 +82,7 @@ class UsersController extends BaseController {
                 if (Auth::loginUsingId($user->id))
                     return Redirect::to('/')->with('message', 'Thanks for registering!');
                 else
-                    return Redirect::to('/login')->with('message', 'Thanks for registering!');
+                    return Redirect::to('/login')->with('message', 'Thanks for registering!');*/
             } catch (Exception $e){
               return Redirect::to('/register')->with('message', 'The following errors occurred: <br> ' . $e->getMessage());
             }
@@ -98,7 +107,7 @@ class UsersController extends BaseController {
               $user = Auth::user();
               $user->email = Input::get('nick');
               $user->premium = true;
-              $user->save();
+
               if (Session::get('redirect'))
                 return Redirect::to(Session::get('redirect'))->with('message', 'You are now logged in!');
               else
@@ -122,5 +131,33 @@ class UsersController extends BaseController {
     public function getLogout() {
         Auth::logout();
         return Redirect::to('/login')->with('message', 'Your are now logged out!');
+    }
+    /**
+     * Attempt to confirm a users account.
+     *
+     * @param $confirmation_code
+     *
+     * @throws InvalidConfirmationCodeException
+     * @return mixed
+     */
+    public function getConfirm($confirmationCode)
+    {
+        if( ! $confirmationCode)
+        {
+            return Redirect::home();
+        }
+        $user = User::where('confirmationCode', $confirmationCode)->first();
+        if ( ! $user)
+        {
+            return Redirect::home();
+        }
+        $user->checked = 1;
+        $user->confirmationCode = null;
+        $user->save();
+
+        if (Auth::loginUsingId($user->id))
+          return Redirect::to('/')->with('message', 'You have successfully verified your account.');
+        else
+          return Redirect::to('/login')->with('message', 'You have successfully verified your account. You can now login.');
     }
 }

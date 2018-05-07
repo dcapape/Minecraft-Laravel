@@ -26,6 +26,7 @@ Route::group([
   Route::get('/login', ['as' => 'login', 'uses' => 'UsersController@getLogin']);
   Route::get('/logout', ['as' => 'logout', 'uses' => 'UsersController@getLogout']);
   Route::get('/register', ['as' => 'register', 'uses' => 'UsersController@getRegister']);
+	Route::get('/register/verify/{confirmationCode}', ['uses' => 'UsersController@getConfirm']);
 
   Route::get('/maps/{id}', function($id) { return View::make('public.pages.map')->with('worldid', $id); });
 
@@ -49,8 +50,10 @@ Route::group([
 	Route::get('/coins/status', 			['uses' => 'coinItemsController@getStatus', 'as' => 'coins.status']);
   Route::get('/coins/{slug}', 			['uses' => 'coinItemsController@show', 'as' => 'coins.show']);
 	Route::get('/coins/data/{slug}', 	['uses' => 'coinItemsController@getData']);
+	Route::get('/coins/hipay/success',['uses' => 'coinItemsController@getHipaySuccess']);
 	Route::post('/coins/data/{slug}', ['uses' => 'coinItemsController@postData', 'as' => 'coins.data']);
   Route::post('/coins/buy/{slug}', 	['uses' => 'coinItemsController@postBuy', 'as' => 'coins.buy']);
+	Route::resource('coins', 'coinItemsController');
 });
 
 Route::resource('forum/topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
