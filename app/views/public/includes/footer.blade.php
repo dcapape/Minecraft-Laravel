@@ -1,7 +1,6 @@
 <div class="footer footerText container-fluid">
   <div class=" pull-right" style="margin-top: 3px;">
     <div class="input-group input-group-sm">
-      {{--<span class="input-group-addon" id="basic-addon1">Language</span>--}}
       {{Form::select('locale', $locales, LaravelLocalization::getCurrentLocale(), ['id' => 'locale', 'class' => 'form-control']);}}
     </div>
   </div>
