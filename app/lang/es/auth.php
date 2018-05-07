@@ -1,0 +1,23 @@
+<?php
+return array(
+    'Login'     => 'Acceso',
+    'SignIn'     => 'Iniciar Sesión',
+    'PleaseLogin'     => 'Por favor, Inicia Sesión',
+    'enterNick'     => 'Nick / Tu E-mail de Mojang',
+    'Password'     => 'Contraseña',
+    'Register'     => 'Regístrate',
+    'registerYourAccount'     => 'Registra tu cuenta',
+    'PleaseRegister'     => 'Por favor, Regístrate',
+    'premiumAccount'     => 'Tengo una cuenta Premium de Mojang',
+    'nonPremiumAccount'     => 'No tengo una cuenta Premium',
+    'Nick'     => 'Nick',
+    'emailAddress'     => 'E-mail',
+    'confirmPassword'     => 'Confirmar contraseña',
+    'yourMojangEmail'     => 'Tu E-mail de Mojang',
+    'youtMojangPassword'     => 'Tu Contraseña de Mojang',
+    'emailSubject'     => 'Verificación de cuenta',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+    ''     => '',
+);
