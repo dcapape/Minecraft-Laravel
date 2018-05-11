@@ -18,6 +18,7 @@
         @endif
         {{ Form::text('nick', null, array('class'=>'form-control', 'placeholder'=>trans('auth.enterNick'))) }}
         {{ Form::password('password', array('class'=>'form-control', 'placeholder'=>trans('auth.Password'))) }}
+        <a href="register">{{trans('auth.createAccount')}}</a>
         <br><br><br>
         {{ Form::submit(trans('auth.Login'), array('class'=>'btn btn-large btn-primary btn-block'))}}
         <br><br><br>

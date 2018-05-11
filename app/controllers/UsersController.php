@@ -47,7 +47,7 @@ class UsersController extends BaseController {
 
                 ///https://visage.surgeplay.com/full/400/nickname
                 if ( User::isAvailable(Input::get('nick')) ) {
-                    return Redirect::to('/register')->with('message', 'The following errors occurred: <br> This nickname is already taken');
+                    return Redirect::to('/register#non-premium')->with('message', 'The following errors occurred: <br> This nickname is already taken');
                 }else{
                     $uuid = new UuidGen;
                     $user = new User;
@@ -84,10 +84,10 @@ class UsersController extends BaseController {
                 else
                     return Redirect::to('/login')->with('message', 'Thanks for registering!');*/
             } catch (Exception $e){
-              return Redirect::to('/register')->with('message', 'The following errors occurred: <br> ' . $e->getMessage());
+              return Redirect::to('/register#non-premium')->with('message', 'The following errors occurred: <br> ' . $e->getMessage());
             }
         } else {
-            return Redirect::to('/register')->with('message', 'The following errors occurred: ')->withErrors($validator)->withInput();
+            return Redirect::to('/register#non-premium')->with('message', 'The following errors occurred: ')->withErrors($validator)->withInput();
         }
       }
 
@@ -107,7 +107,8 @@ class UsersController extends BaseController {
               $user = Auth::user();
               $user->email = Input::get('nick');
               $user->premium = true;
-
+              $user->save();
+              
               if (Session::get('redirect'))
                 return Redirect::to(Session::get('redirect'))->with('message', 'You are now logged in!');
               else

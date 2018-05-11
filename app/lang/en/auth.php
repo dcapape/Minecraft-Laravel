@@ -16,7 +16,7 @@ return array(
     'yourMojangEmail'     => 'Your Mojang E-mail',
     'youtMojangPassword'     => 'Your Mojang Password',
     'emailSubject'     => 'Verify your account',
-    ''     => '',
+    'createAccount'     => 'You don\'t have an account yet? Create one now',
     ''     => '',
     ''     => '',
     ''     => '',

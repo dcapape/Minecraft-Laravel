@@ -8,7 +8,7 @@
   <div class="panel-heading">
     <h3 class="panel-title">{{trans('auth.registerYourAccount')}}</h3>
   </div>
-  <div class="panel-body col-md-8 center">
+  <div class="panel-body col-md-12 center">
     {{ Form::open(array('url'=>'user/create', 'class'=>'form-signup', 'autocomplete'=>'new-password')) }}
         <br><br>
         <h2 class="form-signup-heading">{{trans('auth.PleaseRegister')}}</h2>
@@ -50,6 +50,7 @@
       $("input[name='password']").attr("placeholder", "{{trans('auth.youtMojangPassword')}}");
       $("input[name='password_confirmation']").hide();
       $("input[name='nick']").hide();
+      document.location.hash = 'premium';
   });
 
   // NON-PREMIUM
@@ -62,11 +63,18 @@
       $("input[name='password']").attr("placeholder", "{{trans('auth.Password')}}");
       $("input[name='nick']").show();
       $("input[name='password_confirmation']").show();
+      document.location.hash = 'non-premium';
   });
 
-  if ($("input[name*='premium']").val() == 1){
-    $(".btn1").click();
-  }else{
+  //if ($("input[name*='premium']").val() == 1){
+  //  $(".btn1").click();
+  //}else{
+  //  $(".btn2").click();
+  //}
+
+  if (window.location.hash == "#non-premium"){
     $(".btn2").click();
+  }else{
+    $(".btn1").click();
   }
 @stop
