@@ -1,10 +1,10 @@
 <?php
 
 class UPermsGroup extends Eloquent{
-    protected $table = "UltraPermissions_Groups";
+    protected $table = "GroupDataStorage";
 
     public static function getByName($name){
-        return UPermsGroup::where('name', $name)->first();
+        return UPermsGroup::where('groupName', $name)->first();
     }
 
 }
