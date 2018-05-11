@@ -43,7 +43,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
       if ($user->uuid == "")
         return null;
       else{
-        if(UPermsUser::getByUUID($user->uuid) != null){
+        if(UPermsUser::getByUUID($user->uuid) !== null){
             if (UPermsUser::getByUUID($user->uuid)->groupName != "")
               return strtolower(UPermsUser::getByUUID($user->uuid)->groupName);
             else

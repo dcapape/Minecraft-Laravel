@@ -7,9 +7,14 @@ class UPermsUser extends Eloquent{
     public static function getByUUID($uuid = null){
         $uuid = (is_null($uuid)) ? @Auth::user()->uuid : $uuid;
 
-        return UPermsUser::where('uuid', $uuid)
-        ->leftJoin('UltraPermissions_Groups', 'UltraPermissions_Users.groupName', '=', 'UltraPermissions_Groups.name')
-        ->first();
+        if (UPermsUser::where('uuid', $uuid)->leftJoin('UltraPermissions_Groups', 'UltraPermissions_Users.groupName', '=', 'UltraPermissions_Groups.name')->count() > 0){
+          return UPermsUser::where('uuid', $uuid)
+          ->leftJoin('UltraPermissions_Groups', 'UltraPermissions_Users.groupName', '=', 'UltraPermissions_Groups.name')
+          ->first();
+        }else{
+          return null;
+        }
+
 
 
         //return UPerms_User::where('uuid', $uuid)->first();

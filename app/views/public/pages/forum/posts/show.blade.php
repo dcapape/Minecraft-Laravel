@@ -29,9 +29,9 @@
         			<div class="row cont">
         				<div class="col-md-2 left-col row-border-right">
                   <h5><a href="/profile/{{User::id($post->userId)->nick}}">{{User::id($post->userId)->nick}}</a></h5>
-                  <h6>{{Convert::parseMCtoHTML(UPermsUser::getByUUID(User::id($post->userId)->uuid)->prefix)}}<h6>
+                  <h6>{{Convert::parseMCtoHTML(@UPermsUser::getByUUID(User::id($post->userId)->uuid)->prefix)}}<h6>
                   @if (User::isPremium(User::id($post->userId)->uuid))
-                  <img src="https://visage.surgeplay.com/full/150/{{User::id($post->userId)->nick}}" title="{{User::id($post->userId)->nick}} avatar" />
+                  <img src="https://visage.surgeplay.com/full/150/{{User::id($post->userId)->uuid}}" title="{{User::id($post->userId)->nick}} avatar" />
                   <!--<img src="https://minecraft-api.com/api/skins/skins.php?player={{User::id($post->userId)->nick}}" style="width:50px" />-->
                   @else
                   <img class="flip" src="https://visage.surgeplay.com/full/150/X-Steve" title="{{User::id($post->userId)->nick}} avatar" />
