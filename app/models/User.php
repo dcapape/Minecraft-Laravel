@@ -73,6 +73,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->email;
     }
     public static function isAvailable($username){
+      $json = file_get_contents('https://axis.iaero.me/accinfo?username='.$username.'&format=json');
+      $obj = json_decode($json);
+
+      try {
+      if ($obj->data->username == null)
+        return false;
+      else
+        return true;
+      }catch(Exception $e) {
+        return false;
+      }
+      /* // OLD USERNAME CHECK SYSTEM
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, "https://visage.surgeplay.com/full/16/".strtolower($username));
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -81,10 +93,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
       if(curl_getinfo($ch, CURLINFO_HTTP_CODE) == 400) {
         curl_close($ch);
         return false;
+      }if(curl_getinfo($ch, CURLINFO_HTTP_CODE) == 500) {
+        curl_close($ch);
+        return false;
       }else{
         curl_close($ch);
         return true;
       }
+      */
 
     }
 }
