@@ -15,7 +15,7 @@
 
     <div class="panel-body cont">
       <div class="col-md-9 left-col">
-        <div class="col-md-4 shopItem">
+        <div class="col-md-4">
           <img src="/img/{{$item->image}}" alt="{{$item->description}}" title="{{$item->description}}">
         </div>
         <div class="col-md-8">
@@ -43,14 +43,6 @@
            @endif
            @foreach ($item->costs as $cost)
              @if ($cost->serverId == $server->serverId)
-
-               @if ($cost->coin == "premium")
-                 @if(Auth::guest())
-
-                 @else
-
-                 @endif
-               @endif
 
              <div class="coin coin-xl {{$cost->coin}}-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" >
                @if ($cost->price <= 0)
@@ -146,7 +138,16 @@ $( document ).ready(function() {
         }
       @endif
     }else{
-      redir = false;
+      @if (Auth::guest())
+        window.location.href = "/login";
+      @else
+        var standard = {{Coin::getBalance(null,"standard")+0}};
+        if (standard >= $(this).data('price')){
+            alert("suficiente");
+        }else{
+            alert("No suficiente");
+        }
+      @endif
     }
       if (redir){
         window.location.href = "/coins/?cost="+$(this).data('price');

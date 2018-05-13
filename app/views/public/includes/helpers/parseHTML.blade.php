@@ -44,4 +44,4 @@ $bbCode->addParser(
 
 //<iframe src="https://www.youtube.com/embed/{SRC}" width="480" height="320" frameborder="0"></iframe>
  ?>
- {{$bbCode->convertToHtml(Convert::parseMCtoHTML($content))}}
+ {{nl2br($bbCode->convertToHtml(Convert::parseMCtoHTML($content)))}}

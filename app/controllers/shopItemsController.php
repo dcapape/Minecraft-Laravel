@@ -14,6 +14,7 @@ class shopItemsController extends BaseController {
      */
     public function index()
     {
+        Session::put('redirect', Request::url());
         return Redirect::route('shop.index');
     }
 
