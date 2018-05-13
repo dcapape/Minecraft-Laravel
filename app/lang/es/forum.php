@@ -12,7 +12,7 @@ return array(
     'LastMessage'     => 'Último Mensaje',
     'Replies'     => 'Respuestas',
     'forumTopics'     => 'Temas del Foro',
-    ''     => '',
+    'forumsIn'     => 'Foros en',
     ''     => '',
     ''     => '',
     ''     => '',

@@ -17,7 +17,11 @@ class HomeController extends BaseController {
 
 	public function showWelcome()
 	{
-		$topics = forumTopic::where('home', 1)->orderBy('date', 'desc')->take(5)->get();
+		//$topics = forumTopic::where('home', 1)->orderBy('date', 'desc')->take(5)->get();
+
+		$topics = forumTopic::leftJoin('forumCategories', 'forumTopics.categoryId', '=', 'forumCategories.id')
+		->select('forumTopics.*','forumCategories.name','forumCategories.language')->where('home', 1)->where('language', LaravelLocalization::getCurrentLocale())->orderBy('date', 'desc')->take(5)->get();
+
 		foreach ($topics as $topic) {
 			$topic->content = forumPost::where('topicId', $topic->id)->first()->content;
 			$topic->length = forumPost::where('topicId', $topic->id)->count();

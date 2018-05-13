@@ -20,7 +20,7 @@
         {{ HTML::ul($errors->all()) }}
       </div>
       @endif
-      
+
       @if (isset($topic))
           {{ Form::model($item, array('route' => array('forum.topic.update', $item->id), 'method' => 'PUT')) }}
       @else
@@ -39,8 +39,8 @@
 
       @if(User::imAdmin())
       <div class="form-group">
-          {{ Form::label('home', 'Homepage') }}
-          {{ Form::checkbox('home', true, Input::old('home'), array('class' => 'form-control')) }}
+          {{ Form::checkbox('home', true, Input::old('home'), array('class' => 'form-control', 'name' => 'home', 'id' => 'home')) }}
+          {{ Form::label('home', 'Show in Homepage', array('class' => 'checkbox-inline')) }}
       </div>
       @endif
 

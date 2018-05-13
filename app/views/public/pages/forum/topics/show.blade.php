@@ -26,10 +26,10 @@
     			<th>
     				{{trans('forum.Topic')}}
     			</th>
-          <th>
+          <th class="small">
     				{{trans('forum.LastMessage')}}
     			</th>
-          <th>
+          <th class="small">
     				{{trans('forum.Replies')}}
     			</th>
     		</tr>
@@ -39,13 +39,13 @@
         <tr>
     			<td>
     				<a href="/forum/topic/{{$topic->id}}">{{$topic->subject}}</a><br>
-            {{date_format(date_create($topic->date), 'd-m-Y H:i');}} / <a href="/profile/{{User::id($topic->userId)->nick}}">{{User::id($topic->userId)->nick}}</a>
+            <abbr class="small">{{date_format(date_create($topic->date), 'd-m-Y H:i');}} / <a href="/profile/{{User::id($topic->userId)->nick}}">{{User::id($topic->userId)->nick}}</a></abbr>
     			</td>
-          <td style="min-width:120px">
+          <td class="col-lg-3 col-md-3 col-sm-2 col-xs-2 small lead">
             {{$topic->lastPostUser}}<br>
-            {{Convert::elapsedTimeString($topic->lastPostDate, null, "1 day",false,"ago", "d-m-Y H:i");}}
+            {{Convert::elapsedTimeString($topic->lastPostDate, null, "1 day",false,trans('langs.ago'), "d-m-Y H:i");}}
           </td>
-          <td>
+          <td class="col-lg-1 col-md-1 col-sm-1 col-xs-1 small lead">
             {{$topic->length}}
           </td>
     		</tr>

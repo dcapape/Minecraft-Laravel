@@ -158,7 +158,7 @@ class Convert
       $dates = (object) array(
           'start' => new DateTime($start ? : 'now'),
           'end' => new DateTime($end ? : 'now'),
-          'intervals' => array('y' => 'year', 'm' => 'month', 'd' => 'day', 'h' => 'hour', 'i' => 'minute', 's' => 'second'),
+          'intervals' => array('y' => trans('langs.year'), 'm' => trans('langs.month'), 'd' => trans('langs.day'), 'h' => trans('langs.hour'), 'i' => trans('langs.minute'), 's' => trans('langs.second')),
           'periods' => array()
       );
       $elapsed = (object) array(
@@ -166,7 +166,10 @@ class Convert
           'unknown' => 'unknown'
       );
       if ($elapsed->interval->invert === 1) {
-          return trim('0 seconds ' . $suffix);
+        if (LaravelLocalization::getCurrentLocale() == "es")
+          return trim($suffix . ' 0 '.trans('langs.seconds'));
+        else
+          return trim('0 '.trans('langs.seconds').' ' . $suffix);
       }
       if (false === empty($limit)) {
           $dates->limit = new DateTime($limit);
@@ -188,6 +191,9 @@ class Convert
           }
       }
       if (false === empty($dates->periods)) {
+        if (LaravelLocalization::getCurrentLocale() == "es")
+          return trim(vsprintf('%1$s %2$s', array($suffix, implode($separator, $dates->periods))));
+        else
           return trim(vsprintf('%1$s %2$s', array(implode($separator, $dates->periods), $suffix)));
       }
 
