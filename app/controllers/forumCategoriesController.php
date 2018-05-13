@@ -77,11 +77,9 @@ class forumCategoriesController extends BaseController {
       ->where('categoryId', $id)->get();
 
       foreach ($topics as $topic) {
-        //$topic->content = forumPost::where('topicId', $topic->id)->first()->content;
+        $topic->content = forumPost::where('topicId', $topic->id)->first()->content;
         $posts = forumPost::where('topicId', $topic->id)->orderBy('id', 'DESC')->first();
-        //$topic->length = forumPost::where('topicId', $topic->id)->count();
         $topic->lastPostUser = User::getNickById($posts->userId)->nick;
-        $topic->lastPostDate = $posts->date;
       }
 
       return View::make('public.pages.forum.topics.show', [

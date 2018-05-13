@@ -38,7 +38,7 @@
         @foreach ($topics as $topic)
         <tr>
     			<td>
-    				<a href="/forum/topic/{{$topic->id}}">{{$topic->subject}}</a><br>
+    				<a href="/forum/topic/{{$topic->id}}" title="{{$topic->content}}">{{$topic->subject}}</a><br>
             <abbr class="small">{{date_format(date_create($topic->date), 'd-m-Y H:i');}} / <a href="/profile/{{User::id($topic->userId)->nick}}">{{User::id($topic->userId)->nick}}</a></abbr>
     			</td>
           <td class="col-lg-3 col-md-3 col-sm-2 col-xs-2 small lead">
