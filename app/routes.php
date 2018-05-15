@@ -51,8 +51,10 @@ Route::group([
 	Route::get('/coins/status', 			['uses' => 'coinItemsController@getStatus', 'as' => 'coins.status']);
   Route::get('/coins/{slug}', 			['uses' => 'coinItemsController@show', 'as' => 'coins.show']);
 	Route::get('/coins/data/{slug}', 	['uses' => 'coinItemsController@getData']);
+	Route::get('/coins/hipay/success',['uses' => 'coinItemsController@getHipaySuccess']);
 	Route::post('/coins/data/{slug}', ['uses' => 'coinItemsController@postData', 'as' => 'coins.data']);
   Route::post('/coins/buy/{slug}', 	['uses' => 'coinItemsController@postBuy', 'as' => 'coins.buy']);
+	Route::resource('coins', 'coinItemsController');
 });
 
 Route::resource('forum/topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
