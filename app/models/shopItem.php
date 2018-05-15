@@ -27,4 +27,11 @@ class shopItem extends Eloquent{
         //'sellable' => 'boolean',
     );
 
+    public static $rulesBuy = array(
+        'serverId' => 'required|numeric',
+        'coin' => 'required|in:standard,premium',
+        'price' => 'required|numeric',
+        'agreement' => 'accepted',
+        'nonpremiumagreement' => 'accepted'
+    );
 }

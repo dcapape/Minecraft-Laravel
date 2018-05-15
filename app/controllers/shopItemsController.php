@@ -160,6 +160,40 @@ class shopItemsController extends BaseController {
       }
     }
 
+    public function postBuy($item)
+    {
+      //dd(Input::all());
+      $validator = Validator::make(Input::all(), shopItem::$rulesBuy);
+      if ($validator->passes()) {
+          try {
+            echo "hola";
+              /*$post = shopItem::find($id);
+              $post->name = Input::get('name');
+              $post->slug = Input::get('slug');
+              $post->description = Input::get('description');
+              $post->categoryId = Input::get('categoryId');
+              $post->allopassId = (Input::get('allopassId') != "") ? Input::get('allopassId') : null;
+              $post->command = Input::get('command');
+              $post->weight = Input::get('weight');
+              $post->sellable = Input::get('sellable');
+
+              if (Input::file('image') != null){
+                Input::file('image')->move(public_path('img'), Input::file('image')->getClientOriginalName());
+                $post->image = Input::file('image')->getClientOriginalName();
+              }
+
+              $post->save();*/
+
+              return Redirect::to('shop/item/success');
+          } catch (Exception $e) {
+              return Redirect::back()->with('message', '.The following errors occurred: <br> ' . $e->getMessage())->withInput();
+          }
+      } else {
+        //dd($validator);
+          return Redirect::back()->with('message', 'The following errors occurred: ')->withErrors($validator)->withInput();
+      }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
