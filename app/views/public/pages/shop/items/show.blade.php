@@ -15,6 +15,14 @@
 
     <div class="panel-body cont">
       <div class="col-md-9 left-col">
+        <div class="col-md-12">
+          @if (Session::get('message'))
+          <div class="alert alert-warning">
+            {{ Session::get('message') }}
+            {{ HTML::ul($errors->all()) }}
+          </div>
+          @endif
+        </div>
         <div class="col-md-4">
           <img src="/img/{{$item->image}}" alt="{{$item->description}}" title="{{$item->description}}">
         </div>
@@ -44,7 +52,7 @@
            @foreach ($item->costs as $cost)
              @if ($cost->serverId == $server->serverId)
 
-             <div class="coin coin-xl {{$cost->coin}}-xl" data-server="{{$server->name}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" >
+             <div class="coin coin-xl {{$cost->coin}}-xl click2pay" data-server="{{$server->name}}" data-serverId="{{$server->id}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" >
                @if ($cost->price <= 0)
                  {{trans('shop.Free')}}
                @else
@@ -75,7 +83,12 @@
         </div>
         <div class="modal-body modalForm">
 
-          <form class="">
+          <!--form class=""-->
+          {{ Form::open(array('route' => array('shop.buy', $item->id))) }}
+            <input type="hidden" name="serverId" id="serverId" value=""></input>
+            <input type="hidden" name="coin" id="coin" value=""></input>
+            <input type="hidden" name="price" id="price" value=""></input>
+
             <div class="form-group">
               <label for="recipient-name" class="control-label">Recipient:</label>
               @if (Auth::user()->premium)
@@ -91,29 +104,30 @@
 
             <div class="form-group">
               <label class="control-label">Cost:</label>
-              <div class="coin coin-xl coin-modal"  id="cost-modal" disabled></div>
+              <input type="text" class="form-control coin" id="cost-modal" disabled value=""></input>
             </div>
 
             <hr class="featurette-divider">
             <div class="form-group">
               <label for="agreement-checkbox" style="display: block;" class="control-label">Terms and Conditions:</label>
-              <input type="checkbox"  id="agreement-checkbox" value="true">
+              <input type="checkbox"  id="agreement-checkbox" name="agreement" value="true">
               <label for="agreement-checkbox" class="checkbox-inline">I agree the General Terms and Conditions. <a href="/general-terms-and-conditions" target="_blank">Read more</a></label>
             </div>
             @if (Auth::user()->premium)
-              <input type="hidden"  id="nonpremium-checkbox" value="true">
+              <input type="hidden"  id="nonpremium-checkbox" name="nonpremiumagreement" value="true">
             @else
             <div class="form-group">
-              <input type="checkbox"  id="nonpremium-checkbox" value="true">
-              <label for="nonpremium-checkbox" class="checkbox-inline">I understand the risks using an unofficial Mojang Account. <a href="/risks-agreement-unofficial-accounts" target="_blank">Read more</a></label>
+              <input type="checkbox"  id="nonpremium-checkbox" name="nonpremiumagreement" value="true">
+              <label for="nonpremium-checkbox" class="checkbox-inline">I understand the risks using an unofficial Mojang Account. <a href="/risks-agreement-unofficial-accounts" target="_blank">{{trans('shop.readmore')}}</a></label>
             </div>
             @endif
-          </form>
+
         </div>
         <div class="modal-footer modalForm">
           <button type="button" class="btn btn-default" data-dismiss="modal">{{trans('shop.Close')}}</button>
-          <button type="button" class="btn btn-primary">{{trans('shop.Buy')}}</button>
+          <button type="submit" class="btn btn-primary">{{trans('shop.Buy')}}</button>
         </div>
+          </form>
       </div>
     </div>
   </div>
@@ -124,7 +138,7 @@
 @section('script')
 
 $( document ).ready(function() {
-  $(".coin").on("click", function(){
+  $(".click2pay").on("click", function(){
     var redir = false;
     if ($(this).data('coin') == 'premium'){
       @if (Auth::guest())
@@ -143,7 +157,7 @@ $( document ).ready(function() {
       @else
         var standard = {{Coin::getBalance(null,"standard")+0}};
         if (standard >= $(this).data('price')){
-            alert("suficiente");
+            // modal
         }else{
             alert("No suficiente");
         }
@@ -153,12 +167,17 @@ $( document ).ready(function() {
         window.location.href = "/coins/?cost="+$(this).data('price');
       }else{
         $('#resumeModal').modal('show');
+        var serverId = $(this).data('serverid');
         var server = $(this).data('server');
         var coin   = $(this).data('coin');
         var price  = $(this).data('price');
         $('#server-name').val(server);
+        $('#coin').val(coin);
+        $('#serverId').val(serverId);
+        $('#price').val(parseFloat(price));
+
         $('#cost-modal').removeClass('premium-xl').removeClass('real-xl').removeClass('standard-xl').addClass(coin+'-xl');
-        $('#cost-modal').html(" "+parseFloat(price));
+        $('#cost-modal').val(parseFloat(price));
       }
 
   });

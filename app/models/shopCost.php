@@ -6,12 +6,12 @@ class shopCost extends Eloquent{
     public static $rules = array(
         //'itemId' => 'required|numeric',
         'serverId' => 'required',
-        'coin' => 'required|in:real,standard,premium',
+        'coin' => 'required|in:standard,premium',
         'price' => 'required|numeric',
         'discount' => 'numeric',
     );
 
 
-    
+
 
 }
