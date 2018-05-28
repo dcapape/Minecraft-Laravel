@@ -166,7 +166,66 @@ class shopItemsController extends BaseController {
       $validator = Validator::make(Input::all(), shopItem::$rulesBuy);
       if ($validator->passes()) {
           try {
-            echo "hola";
+            try {
+              // Define GET Inputs
+              $coin = Input::get("coin");
+              $price = Input::get("price");
+              $itemId = Input::get("itemId");
+              $serverId = Input::get("serverId");
+
+              // Check if Server ID valid
+              if (!Server::where('id', $serverId)->count() && $serverId <> 0)
+                return App::abort(500, 'Unauthorized Server ID.');
+              $server = Server::where('id', $serverId)->first();
+
+              // Check if Item exists
+              if (!shopItem::find($itemId)->count())
+                return App::abort(500, 'Unauthorized Shop Item.');
+
+              // Get Item object and related costs
+              $item = shopItem::where('id', $itemId)->first();
+              $item->costs = shopCost::where('itemId', $item->id)->get();
+              //$item->servers = shopCost::where('itemId', $item->id)->groupBy('serverId')->get();
+
+              // Check if User request is valid
+              $valid = false;
+              foreach ($item->costs as $cost) {
+                if ($cost->itemId == $itemId && $cost->serverId == $serverId && $cost->coin == $coin && $cost->price == $price)
+                  $valid = true;
+              }
+
+              if (!$valid)
+                return App::abort(500, 'Unauthorized Transaction.');
+
+              $user = User::find(Auth::user()->id);
+
+              $sell = new shopSell;
+              $sell->uuid = $user->uuid;
+              $sell->userId = $user->id;
+              $sell->nick = $user->nick;
+              $sell->ip = GeoIP::getLocation()["ip"];
+              $sell->email = $user->email;
+              $sell->premium = $user->premium;
+
+              $sell->itemId = $itemId;
+              $sell->itemName = $item->name;
+
+              $sell->serverId = $serverId;
+              $sell->serverName = $server->name;
+
+              $sell->coin = $coin;
+              $sell->cost = $price;
+
+              $sell->status = "PENGING";
+              $sell->save();
+
+              echo "Valid <pre>";
+              dd($item);
+
+
+            }catch (Exception $e) {
+                return Redirect::back()->with('message', '-The following errors occurred: <br> ' . $e->getMessage());
+            }
               /*$post = shopItem::find($id);
               $post->name = Input::get('name');
               $post->slug = Input::get('slug');

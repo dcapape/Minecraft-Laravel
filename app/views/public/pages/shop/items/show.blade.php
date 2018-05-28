@@ -52,7 +52,7 @@
            @foreach ($item->costs as $cost)
              @if ($cost->serverId == $server->serverId)
 
-             <div class="coin coin-xl {{$cost->coin}}-xl click2pay" data-server="{{$server->name}}" data-serverId="{{$server->id}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" >
+             <div class="coin coin-xl {{$cost->coin}}-xl click2pay" data-server="{{$server->name}}" data-serverId="{{$server->serverId}}" data-cost="{{$cost->id}}" data-price="{{$cost->price}}" data-coin="{{$cost->coin}}" data-name="{{$item->name}}" >
                @if ($cost->price <= 0)
                  {{trans('shop.Free')}}
                @else
@@ -88,6 +88,7 @@
             <input type="hidden" name="serverId" id="serverId" value=""></input>
             <input type="hidden" name="coin" id="coin" value=""></input>
             <input type="hidden" name="price" id="price" value=""></input>
+            <input type="hidden" name="itemId" id="itemId" value="{{$item->id}}"></input>
 
             <div class="form-group">
               <label for="recipient-name" class="control-label">Recipient:</label>
