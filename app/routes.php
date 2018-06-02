@@ -45,7 +45,7 @@ Route::group([
   Route::resource('shop/item', 'shopItemsController', ['except' => ['store', 'update', 'destroy']]);
   Route::resource('shop', 'shopController', ['as' => 'shop']);
 	Route::post('/shop/item/buy/{item}', 	['uses' => 'shopItemsController@postBuy', 'as' => 'shop.buy']);
-	Route::get('/shop/item/success', 	['uses' => 'shopItemsController@getSuccess', 'as' => 'shop.success']);
+	Route::get('/shop/item/success/{transactionId}', 	['uses' => 'shopItemsController@getSuccess', 'as' => 'shop.success']);
 
 	//Route::resource('coins', 'coinItemsController', ['except' => ['store', 'update', 'destroy']]);
 	Route::get('/coins', 							['uses' => 'coinItemsController@index', 'as' => 'coins.index']);

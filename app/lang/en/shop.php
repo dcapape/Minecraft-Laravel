@@ -23,6 +23,8 @@ return array(
     'billingData'     => 'Billing Details',
     'success'     => 'Congratulations!',
     'successdetails'     => 'Your payment was successfully processed! Your coins will be added automatically.',
+    'successtransaction'     => 'The process has been completed successfully completed, here is your identifier:',
+    'successinstructions'     => 'You will receive your reward after a few minutes or when you re-enter the server.',
     'failed'     => '/O.O\  Oh! Payment Failed!',
     'faileddetails'     => 'Your payment was declined. Maybe you want to try another payment method.',
     'redirect'     => 'You will be redirected to the shop in 5 seconds...',

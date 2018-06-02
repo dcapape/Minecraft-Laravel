@@ -23,6 +23,8 @@ return array(
     'billingData'     => 'Datos de facturación',
     'success'     => 'Enhorabuena!',
     'successdetails'     => 'El pago ha sido realizado con éxito. Tus monedas serán añadidas automáticamente.',
+    'successtransaction'     => 'El proceso ha sido completado con éxito, aquí está identificador:',
+    'successinstructions'     => 'Recibirás tu recompensa pasados unos minutos o al volver a entrar al servidor.',
     'failed'     => '/O.O\  Oh! Algo falló!',
     'faileddetails'     => 'Tu pago fue rechazado. Quizás quieras intentar utilizar otro método de pago.',
     'redirect'     => 'Serás redirigido a la tienda en 5 segundos...',

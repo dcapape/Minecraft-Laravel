@@ -198,6 +198,8 @@ class shopItemsController extends BaseController {
                 return App::abort(500, 'Unauthorized Transaction.');
 
               $user = User::find(Auth::user()->id);
+              $uuid = new UuidGen;
+              $tansactionid = $uuid->generateUuid();
 
               $sell = new shopSell;
               $sell->uuid = $user->uuid;
@@ -216,34 +218,28 @@ class shopItemsController extends BaseController {
               $sell->coin = $coin;
               $sell->cost = $price;
 
+              $sell->transactionId = $tansactionid;
               $sell->status = "PENGING";
               $sell->save();
-
-              echo "Valid <pre>";
-              dd($item);
-
-
             }catch (Exception $e) {
                 return Redirect::back()->with('message', '-The following errors occurred: <br> ' . $e->getMessage());
             }
-              /*$post = shopItem::find($id);
-              $post->name = Input::get('name');
-              $post->slug = Input::get('slug');
-              $post->description = Input::get('description');
-              $post->categoryId = Input::get('categoryId');
-              $post->allopassId = (Input::get('allopassId') != "") ? Input::get('allopassId') : null;
-              $post->command = Input::get('command');
-              $post->weight = Input::get('weight');
-              $post->sellable = Input::get('sellable');
 
-              if (Input::file('image') != null){
-                Input::file('image')->move(public_path('img'), Input::file('image')->getClientOriginalName());
-                $post->image = Input::file('image')->getClientOriginalName();
-              }
+            try {
+              $transaction = new shopTransaction();
+              $transaction->uuid = $user->uuid;
+              $transaction->serverId = $serverId;
+              $transaction->soldId = $itemId;
+              $transaction->commands = $item->command;
+              $transaction->status = "pending";
+              $transaction->transactionId = $transactionid;
+              $transaction->log = "";
+              $transaction->save();
+            }catch (Exception $e) {
+                return Redirect::back()->with('message', '-The following errors occurred: <br> ' . $e->getMessage());
+            }
 
-              $post->save();*/
-
-              return Redirect::to('shop/item/success');
+              return Redirect::to('shop/item/success/'.$transactionid);
           } catch (Exception $e) {
               return Redirect::back()->with('message', '.The following errors occurred: <br> ' . $e->getMessage())->withInput();
           }
@@ -251,6 +247,12 @@ class shopItemsController extends BaseController {
         //dd($validator);
           return Redirect::back()->with('message', 'The following errors occurred: ')->withErrors($validator)->withInput();
       }
+    }
+
+    public function getSuccess($transactionid)
+    {
+      return View::make('public.pages.shop.items.success',
+                  ['transactionid' => $transactionid]);
     }
 
     /**
