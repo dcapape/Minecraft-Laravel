@@ -4,7 +4,7 @@ class shopItemsController extends BaseController {
     public function __construct() {
         $this->beforeFilter('csrf', array('on' => 'post'));
         $this->beforeFilter('auth', array('except' => ['index', 'show']));
-        $this->beforeFilter('admin', array('except' => ['index', 'show']));
+        $this->beforeFilter('admin', array('except' => ['index', 'show','postBuy', 'getSuccess']));
     }
 
     /**
@@ -199,7 +199,7 @@ class shopItemsController extends BaseController {
 
               $user = User::find(Auth::user()->id);
               $uuid = new UuidGen;
-              $tansactionid = $uuid->generateUuid();
+              $transactionid = $uuid->generateUuid();
 
               $sell = new shopSell;
               $sell->uuid = $user->uuid;
@@ -218,7 +218,7 @@ class shopItemsController extends BaseController {
               $sell->coin = $coin;
               $sell->cost = $price;
 
-              $sell->transactionId = $tansactionid;
+              $sell->transactionId = $transactionid;
               $sell->status = "PENGING";
               $sell->save();
             }catch (Exception $e) {
@@ -236,7 +236,13 @@ class shopItemsController extends BaseController {
               $transaction->log = "";
               $transaction->save();
             }catch (Exception $e) {
-                return Redirect::back()->with('message', '-The following errors occurred: <br> ' . $e->getMessage());
+                return Redirect::back()->with('message', '*The following errors occurred: <br> ' . $e->getMessage());
+            }
+
+            if (Coin::where('uuid', $user->uuid)->where('coin', $coin)->count() > 0){
+              $coin = Coin::where('uuid', $user->uuid)->where('coin', $coin)->first();
+              $coin->balance = $coin->balance - $price;
+              $coin->save();
             }
 
               return Redirect::to('shop/item/success/'.$transactionid);
