@@ -2,6 +2,8 @@ vendor/
 oldvendor/
 node_modules/
 npm-debug.log
+public/test/
+public/s/
 
 # Laravel 4 specific
 bootstrap/compiled.php
@@ -24,6 +26,7 @@ app/config/remote.php
 app/config/queue.php
 app/config/apis.php
 app/config/serverStatus.php
+app/config/mail.php
 public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/core/includes/navbar.php
 public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s3.png
 public/codecanyon-19581354-aggroth-a-modern-styled-minecraft-template/assets/img/s2.png

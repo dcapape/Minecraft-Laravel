@@ -259,7 +259,7 @@
     <center>
   @if (User::isPremium($stats->uuid))
   <!--<img src="https://minecraft-api.com/api/skins/skins.php?player={{$stats->name}}" style="width:50px" />-->
-  <img class="flip" src="https://visage.surgeplay.com/full/400/{{$stats->name}}" title="{{$stats->name}} avatar" />
+  <img class="flip" src="https://visage.surgeplay.com/full/400/{{$stats->uuid}}" title="{{$stats->name}} avatar" />
   @else
   <!--<img src="https://lh3.googleusercontent.com/kcEh6LtwvYN1dUrh1d-ctvtFLbkVdT6ba-8Tr7ePYz6FCmHcuTA5K14Sm1CgEbuKHuqI-gWlifb7XdEKlG2zTw=s400" style="width:50px" />-->
   <img class="flip" src="https://visage.surgeplay.com/full/400/X-Steve" title="{{$stats->name}} avatar" />
