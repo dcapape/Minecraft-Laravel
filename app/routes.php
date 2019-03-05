@@ -56,6 +56,9 @@ Route::group([
 	Route::post('/coins/data/{slug}', ['uses' => 'coinItemsController@postData', 'as' => 'coins.data']);
   Route::post('/coins/buy/{slug}', 	['uses' => 'coinItemsController@postBuy', 'as' => 'coins.buy']);
 	Route::resource('coins', 'coinItemsController');
+
+	Route::get('/page/create/{pageId}', ['uses' => 'pageController@create', 'as' => 'page.create']);
+	Route::resource('page', 'pageController');
 });
 
 Route::resource('forum/topic', 'forumTopicsController', ['only' => ['store','update', 'destroy']]);
